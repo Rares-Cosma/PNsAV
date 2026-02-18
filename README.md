@@ -1,6 +1,5 @@
 <h1 align="center">PNsAV</h1>
-<h3 align="center">Probabilistic Neurosymbolistic Argument Validation Engine</h3>
+<h3 align="center">Probabilistic Neurosymbolic Argument Validation Model</h3>
 
-## Description
-
-PNsAV is a multi-layer neurosymbolic AI, capable of performing formal logic validation (on 3 layers, for different types of errors)  
+## Abstract
+PNsAV is a multi-layer neurosymbolic reasoning system designed to perform formal validation of argument structures extracted from natural language. A constrained large language model is employed as a semantic parser, identifying argumentative units, inferential relations, and domain concepts, which are subsequently mapped to an ontological representation. These structured arguments are processed by a set of formal validation layers implementing non-monotonic and defeasible reasoning, combined with a probabilistic extension of formal logic. The validation process includes local structural consistency checks and global argument acceptability evaluation. The system identifies logical fallacies, invalid inference patterns, and unsupported conclusions, producing an explicit symbolic explanation of detected errors. PNsAV aims to bridge the gap between statistical language models and formal logic by enforcing explicit logical constraints on natural language reasoning. By integrating ttformal verification methods with statistical language models, PNsAV provides an alternative to constrained reasoning engines or pure neural systems, offering improved stability, predictability and correctness.

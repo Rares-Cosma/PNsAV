@@ -1,0 +1,96 @@
+{
+  "atoms": [
+    {"id": "a1", "text": "John entered the private property without permission"},
+    {"id": "a2", "text": "John is guilty of trespassing"},
+    {"id": "a3", "text": "John was invited by the owner"},
+    {"id": "a4", "text": "John is not guilty of trespassing"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"},
+    {"id": "r2", "type": "defeasible", "premises": ["a3"], "conclusion": "a4"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a3"], "applied_rules": ["r2"], "conclusion": "a4", "sub_arguments": []}
+  ],
+  "attacks": [
+    {"from_arg": "arg2", "to_arg": "arg1", "type": "rebut"}
+  ]
+}
+@
+{
+  "atoms": [
+    {"id": "a1", "text": "The security footage shows a person in a red hat stealing the bike"},
+    {"id": "a2", "text": "The thief wore a red hat"},
+    {"id": "a3", "text": "The camera was low-resolution and colors are distorted"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a3"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": [
+    {"from_arg": "arg2", "to_arg": "arg1", "type": "undercut"}
+  ]
+}
+@
+{
+  "atoms": [
+    {"id": "a1", "text": "Global temperatures decreased this year"},
+    {"id": "a2", "text": "Climate change is stopping"},
+    {"id": "a3", "text": "The data showing a temperature decrease was fabricated"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a3"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": [
+    {"from_arg": "arg2", "to_arg": "arg1", "type": "undermine"}
+  ]
+}
+@
+{
+  "atoms": [
+    {"id": "a1", "text": "Oxygen is required for fire"},
+    {"id": "a2", "text": "This room is a vacuum"},
+    {"id": "a3", "text": "There is no oxygen in this room"},
+    {"id": "a4", "text": "A fire cannot be started in this room"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a2"], "conclusion": "a3"},
+    {"id": "r2", "type": "strict", "premises": ["a1", "a3"], "conclusion": "a4"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a1", "a3"], "applied_rules": ["r2"], "conclusion": "a4", "sub_arguments": ["arg1"]}
+  ],
+  "attacks": []
+}
+@
+{
+  "atoms": [
+    {"id": "a1", "text": "The patient has a fever"},
+    {"id": "a2", "text": "The patient has an infection"},
+    {"id": "a3", "text": "The patient should take antibiotics"},
+    {"id": "a4", "text": "The patient is allergic to penicillin"},
+    {"id": "a5", "text": "Penicillin should not be used"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"},
+    {"id": "r2", "type": "defeasible", "premises": ["a2"], "conclusion": "a3"},
+    {"id": "r3", "type": "strict", "premises": ["a4"], "conclusion": "a5"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a2"], "applied_rules": ["r2"], "conclusion": "a3", "sub_arguments": ["arg1"]},
+    {"id": "arg3", "premises": ["a4"], "applied_rules": ["r3"], "conclusion": "a5", "sub_arguments": []}
+  ],
+  "attacks": [
+    {"from_arg": "arg3", "to_arg": "arg2", "type": "undercut"}
+  ]
+}

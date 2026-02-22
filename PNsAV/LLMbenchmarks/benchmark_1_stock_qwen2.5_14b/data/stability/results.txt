@@ -1,0 +1,60 @@
+Prompt set  1 
+
+Output 1 processed.
+Output 2 processed.
+Output 3 processed.
+Output 4 processed.
+Output 5 processed.
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 2, 'defeasible_rules': 1, 'attacks_count': 2, 'attack_types': Counter({'undercut': 1, 'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 1, 'strict_rules': 1, 'defeasible_rules': 0, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 1, 'strict_rules': 1, 'defeasible_rules': 0, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+Prompt set  2 
+
+Output 6 processed.
+Output 7 processed.
+Output 8 processed.
+Output 9 processed.
+Output 10 processed.
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 3, 'rules_count': 1, 'strict_rules': 0, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+Prompt set  3 
+
+Output 11 processed.
+Output 12 processed.
+Output 13 processed.
+Output 14 processed.
+Output 15 processed.
+{'atoms_count': 3, 'rules_count': 1, 'strict_rules': 0, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 2, 'attack_types': Counter({'rebut': 1, 'undermine': 1})}
+{'atoms_count': 3, 'rules_count': 1, 'strict_rules': 0, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 3, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 3, 'rules_count': 1, 'strict_rules': 0, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+Prompt set  4 
+
+Output 16 processed.
+Output 17 processed.
+Output 18 processed.
+Output 19 processed.
+Output 20 processed.
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 3, 'strict_rules': 3, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 0, 'attack_types': Counter()}
+Prompt set  5 
+
+Output 21 processed.
+Output 22 processed.
+Output 23 processed.
+Output 24 processed.
+Output 25 processed.
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 2, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 6, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 6, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}

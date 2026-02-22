@@ -1,0 +1,29 @@
+Prompt: 
+John is guilty of trespassing because he entered the private property without permission. However, John claims he was invited by the owner, which means he is not guilty of trespassing.
+
+Computed output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+Valid output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+
+Prompt: 
+The security footage shows a person in a red hat stealing the bike, so the thief wore a red hat. But the camera was low-resolution and the colors are distorted, so the footage cannot reliably identify the color of the hat.
+
+Computed output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+Valid output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+
+Prompt: 
+Professor X says that climate change is stopping because global temperatures decreased this year. However, the data showing a temperature decrease was fabricated by an intern.
+
+Computed output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+Valid output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+
+Prompt: 
+Oxygen is required for fire. This room is a vacuum, meaning there is no oxygen here. Therefore, a fire cannot be started in this room.
+
+Computed output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 0, 'attack_types': Counter()}
+Valid output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+
+Prompt: 
+The patient has a fever, so they have an infection. If they have an infection, they should take antibiotics. However, the patient is allergic to penicillin, so penicillin should not be used as the antibiotic.
+
+Computed output:  {'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+Valid output:  {'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}

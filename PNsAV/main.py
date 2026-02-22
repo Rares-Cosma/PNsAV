@@ -81,6 +81,7 @@ You must output ONLY valid, parsable JSON matching the exact schema below. Do no
    - "defeasible": Presumptive, typical, or fallible reasoning (e.g., "If x is a bird, x usually flies", "If witness says X, X is true").
    - A rule maps a set of premise atoms to a conclusion atom. 
    - Extract enthymemes (implicit rules) ONLY if strictly necessary to connect stated claims.
+   - Crucial: If a conclusion requires multiple facts to be true simultaneously, list ALL those facts in a single 'premises' array for one rule.
 
 3. ARGUMENTS (Tree Structure):
    - An argument applies rules to premises to reach a conclusion.
@@ -148,7 +149,7 @@ PROCESS THE FOLLOWING TEXT:
 
 def translate(text: str) -> DebateStructure:
     response = ollama.chat(
-        model="llama3",
+        model="qwen2.5:14b",
         format="json",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},

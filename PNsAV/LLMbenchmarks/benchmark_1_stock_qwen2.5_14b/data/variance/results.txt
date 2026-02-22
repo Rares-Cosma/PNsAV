@@ -1,0 +1,46 @@
+Prompt 1: 
+John is guilty of trespassing because he entered the private property without permission. However, John claims he was invited by the owner, which means he is not guilty of trespassing.
+
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'rebut': 1})}
+
+Prompt 2: 
+The security footage shows a person in a red hat stealing the bike, so the thief wore a red hat. But the camera was low-resolution and the colors are distorted, so the footage cannot reliably identify the color of the hat.
+
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 1, 'attack_types': Counter({'undercut': 1})}
+
+Prompt 3: 
+Professor X says that climate change is stopping because global temperatures decreased this year. However, the data showing a temperature decrease was fabricated by an intern.
+
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 0, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+
+Prompt 4: 
+Oxygen is required for fire. This room is a vacuum, meaning there is no oxygen here. Therefore, a fire cannot be started in this room.
+
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 1, 'defeasible_rules': 1, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+{'atoms_count': 4, 'rules_count': 2, 'strict_rules': 2, 'defeasible_rules': 0, 'attacks_count': 0, 'attack_types': Counter()}
+
+Prompt 5: 
+The patient has a fever, so they have an infection. If they have an infection, they should take antibiotics. However, the patient is allergic to penicillin, so penicillin should not be used as the antibiotic.
+
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+{'atoms_count': 5, 'rules_count': 3, 'strict_rules': 1, 'defeasible_rules': 2, 'attacks_count': 1, 'attack_types': Counter({'undermine': 1})}
+
+=> we can see good enough variance levels (almost 0)

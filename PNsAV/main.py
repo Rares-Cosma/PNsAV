@@ -6,7 +6,7 @@ import ollama
 # -----------------------------
 
 SYSTEM_PROMPT = ""
-with open("PNsAV\global_system_prompt.txt", "r", encoding="utf-8") as f:
+with open("PNsAV/global_system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
 

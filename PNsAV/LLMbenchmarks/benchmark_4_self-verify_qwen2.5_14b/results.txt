@@ -1,0 +1,331 @@
+Prompt: If a creature is a bird, it has wings.  
+This creature has wings.  
+Therefore, this creature is a bird.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "If a creature is a bird, it has wings"},
+    {"id": "a2", "text": "This creature has wings"},
+    {"id": "a3", "text": "Therefore, this creature is a bird"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "a creature is a bird"},
+    {"id": "a2", "text": "it has wings"},
+    {"id": "a3", "text": "This creature has wings"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a3"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+If it rains, the ground gets wet.  
+It is not raining.  
+Therefore, the ground is not wet.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "If it rains, the ground gets wet"},
+    {"id": "a2", "text": "It is not raining"},
+    {"id": "a3", "text": "The ground is not wet"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "it rains"},
+    {"id": "a2", "text": "the ground gets wet"},
+    {"id": "a3", "text": "It is not raining"},
+    {"id": "a4", "text": "The ground is not wet"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a3"], "applied_rules": [], "conclusion": "a4", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+If a device is encrypted and password-protected, it is secure.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "A device is encrypted and password-protected"},
+    {"id": "a2", "text": "The device is secure"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "A device is encrypted"},
+    {"id": "a2", "text": "The device is password-protected"},
+    {"id": "a3", "text": "The device is secure"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1", "a2"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+Alice is a doctor and a researcher.  
+All doctors are licensed.  
+Therefore, Alice is licensed.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Alice is a doctor"},
+    {"id": "a2", "text": "Alice is a researcher"},
+    {"id": "a3", "text": "All doctors are licensed"},
+    {"id": "a4", "text": "Alice is licensed"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a1"], "conclusion": "a4"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a3"], "applied_rules": ["r1"], "conclusion": "a4", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Alice is a doctor"},
+    {"id": "a2", "text": "Alice is a researcher"},
+    {"id": "a3", "text": "All doctors are licensed"},
+    {"id": "a4", "text": "Alice is licensed"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a1"], "conclusion": "a4"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a3"], "applied_rules": ["r1"], "conclusion": "a4", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+The policy is justified because it is the right thing to do.  
+It is the right thing to do because the policy is justified.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "The policy is justified"},
+    {"id": "a2", "text": "It is the right thing to do"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"},
+    {"id": "r2", "type": "defeasible", "premises": ["a2"], "conclusion": "a1"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a2"], "applied_rules": ["r2"], "conclusion": "a1", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "The policy is justified"},
+    {"id": "a2", "text": "It is the right thing to do"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+All philosophers think deeply.  
+Socrates thinks deeply.  
+Therefore, Socrates is a philosopher.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "All philosophers think deeply"},
+    {"id": "a2", "text": "Socrates thinks deeply"},
+    {"id": "a3", "text": "Socrates is a philosopher"}
+  ],
+  "rules": [],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a2"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "All philosophers think deeply"},
+    {"id": "a2", "text": "Socrates thinks deeply"},
+    {"id": "a3", "text": "Socrates is a philosopher"}
+  ],
+  "rules": [],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+Birds typically fly.  
+Penguins are birds.  
+Penguins do not fly.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Birds typically fly"},
+    {"id": "a2", "text": "Penguins are birds"},
+    {"id": "a3", "text": "Penguins do not fly"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": [], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Birds typically fly"},
+    {"id": "a2", "text": "Penguins are birds"},
+    {"id": "a3", "text": "Penguins do not fly"}
+  ],
+  "rules": [],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Prompt: 
+Every student read a book.
+
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Every student read a book"}
+  ],
+  "rules": [],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": [], "conclusion": "a1", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "Every student read a book"}
+  ],
+  "rules": [],
+  "arguments": []
+}
+Prompt: 
+The witness says the suspect was at the scene.  
+The security footage shows the suspect elsewhere.
+
+Primary model response:
+ {
+"atoms": [
+{"id": "a1", "text": "The witness says the suspect was at the scene"},
+{"id": "a2", "text": "The security footage shows the suspect elsewhere"}
+],
+"rules": [],
+"arguments": [
+{"id": "arg1", "premises": ["a1"], "applied_rules": [], "conclusion": "a1", "sub_arguments": []},
+{"id": "arg2", "premises": ["a2"], "applied_rules": [], "conclusion": "a2", "sub_arguments": []}
+],
+"attacks": [
+{"from_arg": "arg2", "to_arg": "arg1", "type": "rebut"}
+]
+}
+Validation response:
+ {
+"atoms": [
+{"id": "a1", "text": "The witness says the suspect was at the scene"},
+{"id": "a2", "text": "The security footage shows the suspect elsewhere"}
+],
+"rules": [],
+"arguments": [
+{"id": "arg1", "premises": ["a1"], "applied_rules": [], "conclusion": "a1", "sub_arguments": []},
+{"id": "arg2", "premises": ["a2"], "applied_rules": [], "conclusion": "a2", "sub_arguments": []}
+],
+"attacks": [
+{"from_arg": "arg2", "to_arg": "arg1", "type": "rebut"}
+]
+}
+Prompt: 
+If something is necessarily true, it is true.  
+It is true that 2+2=4.  
+Therefore, 2+2=4 is necessarily true.
+Primary model response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "If something is necessarily true, it is true"},
+    {"id": "a2", "text": "It is true that 2+2=4"},
+    {"id": "a3", "text": "2+2=4 is necessarily true"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a1"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": [], "conclusion": "a2", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a1", "a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": ["arg1"]}
+  ],
+  "attacks": []
+}
+Validation response:
+ {
+  "atoms": [
+    {"id": "a1", "text": "something is necessarily true"},
+    {"id": "a2", "text": "it is true"},
+    {"id": "a3", "text": "It is true that 2+2=4"},
+    {"id": "a4", "text": "2+2=4 is necessarily true"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a1"], "conclusion": "a2"},
+    {"id": "r2", "type": "defeasible", "premises": ["a3"], "conclusion": "a4"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": [], "applied_rules": [], "conclusion": "a3", "sub_arguments": []},
+    {"id": "arg2", "premises": ["a3"], "applied_rules": ["r2"], "conclusion": "a4", "sub_arguments": ["arg1"]}
+  ],
+  "attacks": []
+}

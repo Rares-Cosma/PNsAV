@@ -1,0 +1,78 @@
+> All mammals breathe air. Dolphins are mammals. Therefore, dolphins breathe air.
+{
+  "atoms": [
+    {"id": "a1", "text": "All mammals breathe air"},
+    {"id": "a2", "text": "Dolphins are mammals"},
+    {"id": "a3", "text": "Dolphins breathe air"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "strict", "premises": ["a1", "a2"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+
+> If a person is a professional athlete, they are fit. John is fit. Therefore, John is a professional athlete.
+{
+  "atoms": [
+    {"id": "a1", "text": "If a person is a professional athlete, they are fit"},
+    {"id": "a2", "text": "John is fit"},
+    {"id": "a3", "text": "John is a professional athlete"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a2"], "applied_rules": [], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+
+> Every part of this machine is light. Therefore, the machine is light. 
+{
+  "atoms": [
+    {"id": "a1", "text": "Every part of this machine is light"},
+    {"id": "a2", "text": "The machine is light"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1"], "applied_rules": ["r1"], "conclusion": "a2", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+
+> Nothing is better than eternal happiness. A ham sandwich is better than nothing. Therefore, a ham sandwich is better than eternal happiness.
+{
+  "atoms": [
+    {"id": "a1", "text": "Nothing is better than eternal happiness"},
+    {"id": "a2", "text": "A ham sandwich is better than nothing"},
+    {"id": "a3", "text": "Therefore, a ham sandwich is better than eternal happiness"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1", "a2"], "conclusion": "a3"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": ["a1", "a2"], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}
+
+> If it is a dog, it has four legs. This animal is not a dog. Therefore, it does not have four legs.
+{
+  "atoms": [
+    {"id": "a1", "text": "If it is a dog, it has four legs"},
+    {"id": "a2", "text": "This animal is not a dog"},
+    {"id": "a3", "text": "It does not have four legs"}
+  ],
+  "rules": [
+    {"id": "r1", "type": "defeasible", "premises": ["a1"], "conclusion": "a2"}
+  ],
+  "arguments": [
+    {"id": "arg1", "premises": [], "applied_rules": ["r1"], "conclusion": "a3", "sub_arguments": []}
+  ],
+  "attacks": []
+}

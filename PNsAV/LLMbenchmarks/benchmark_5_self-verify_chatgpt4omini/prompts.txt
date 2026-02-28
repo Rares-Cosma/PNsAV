@@ -1,0 +1,33 @@
+If a creature is a bird, it has wings.  
+This creature has wings.  
+Therefore, this creature is a bird.
+@
+If it rains, the ground gets wet.  
+It is not raining.  
+Therefore, the ground is not wet.
+@
+If a device is encrypted and password-protected, it is secure.
+@
+Alice is a doctor and a researcher.  
+All doctors are licensed.  
+Therefore, Alice is licensed.
+@
+The policy is justified because it is the right thing to do.  
+It is the right thing to do because the policy is justified.
+@
+All philosophers think deeply.  
+Socrates thinks deeply.  
+Therefore, Socrates is a philosopher.
+@
+Birds typically fly.  
+Penguins are birds.  
+Penguins do not fly.
+@
+Every student read a book.
+@
+The witness says the suspect was at the scene.  
+The security footage shows the suspect elsewhere.
+@
+If something is necessarily true, it is true.  
+It is true that 2+2=4.  
+Therefore, 2+2=4 is necessarily true.

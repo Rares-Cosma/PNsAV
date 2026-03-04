@@ -1,33 +1,19 @@
-If a creature is a bird, it has wings.  
-This creature has wings.  
-Therefore, this creature is a bird.
+If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
 @
-If it rains, the ground gets wet.  
-It is not raining.  
-Therefore, the ground is not wet.
+If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.
 @
-If a device is encrypted and password-protected, it is secure.
+The defendant is guilty if and only if the DNA evidence is a match. The DNA evidence is not a match because the sample was contaminated. Therefore, the defendant is not guilty.
 @
-Alice is a doctor and a researcher.  
-All doctors are licensed.  
-Therefore, Alice is licensed.
+Usually, if a person exercises and eats well, they are healthy. If a person is healthy, they have a high life expectancy. Bob exercises. Bob does not eat well.
 @
-The policy is justified because it is the right thing to do.  
-It is the right thing to do because the policy is justified.
+A statement is hearsay if it was made out of court. If a statement is hearsay, it is generally inadmissible unless an exception applies. This statement was made out of court. No exception applies. Therefore, this statement is inadmissible.
 @
-All philosophers think deeply.  
-Socrates thinks deeply.  
-Therefore, Socrates is a philosopher.
+If the engine is overheating, the warning light turns red. If the sensor is faulty, the warning light turns red. The warning light is red. Therefore, the engine is overheating and the sensor is faulty.
 @
-Birds typically fly.  
-Penguins are birds.  
-Penguins do not fly.
+Knowledge requires belief, truth, and justification. Smith believes the earth is flat. It is not the case that the earth is flat. Therefore, Smith does not have knowledge.
 @
-Every student read a book.
+If a city is in France, it is in Europe. Lyon is in France. If a city is in Europe, it uses the Euro. Therefore, Lyon uses the Euro.
 @
-The witness says the suspect was at the scene.  
-The security footage shows the suspect elsewhere.
+The fruit is a tomato. If a fruit is a tomato, it is botanically a fruit. If a fruit is a tomato, it is culturally a vegetable.
 @
-If something is necessarily true, it is true.  
-It is true that 2+2=4.  
-Therefore, 2+2=4 is necessarily true.
+If the alarm sounds, everyone must evacuate. The alarm is sounding. It is not the case that everyone must evacuate because it is a scheduled drill.

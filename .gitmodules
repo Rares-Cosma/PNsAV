@@ -1,0 +1,3 @@
+[submodule "arg-microtexts"]
+	path = arg-microtexts
+	url = https://github.com/peldszus/arg-microtexts.git

@@ -1,3 +1,5 @@
+While it is generally held that a signature on a page constitutes a binding agreement, one might argue that if the ink is faded or the parchment is brittle, the integrity of the document is compromised. It could be argued that a compromised document is not legally enforceable. This specific document has faded ink. However, it is not necessarily the case that the document is unenforceable because it was notarized before the fading occurred.
+@
 If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
 @
 If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.

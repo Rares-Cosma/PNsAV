@@ -1,0 +1,546 @@
+Here is the clean, formatted mapping for all 11 prompts. Each section includes the Original Prompt, the Atoms list (one per line), and the expanded JSON Ruleset.
+
+1. The Legal Document (Integrity & Enforceability)
+Prompt: While it is generally held that a signature on a page constitutes a binding agreement, one might argue that if the ink is faded or the parchment is brittle, the integrity of the document is compromised. It could be argued that a compromised document is not legally enforceable. This specific document has faded ink. However, it is not necessarily the case that the document is unenforceable because it was notarized before the fading occurred.
+
+Atoms:
+
+a1: A signature on a page constitutes a binding agreement (Axiom)
+a2: The ink is faded (Premise)
+a3: The parchment is brittle (Premise)
+a4: The integrity of the document is compromised (Axiom)
+a5: A compromised document is not legally enforceable (Axiom)
+a6: This specific document has faded ink (Premise)
+a7: The document is notarized before the fading occurred (Premise)
+a8: The document is not unenforceable (Axiom)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a4",
+      "premises": [
+        "a2",
+        "a3"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a5",
+      "premises": [
+        "a4"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a8",
+      "premises": [
+        "a6",
+        "a7"
+      ],
+      "type": "defeasible"
+    }
+  ]
+}
+
+2. Contract Duress (Minority Status)
+Prompt: If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
+
+Atoms:
+
+a1: A contract is signed under duress (Axiom)
+a2: A signatory is a minor (Axiom)
+a3: A contract is voidable (Axiom)
+a4: This contract was signed under duress (Premise)
+a5: This signatory is a minor (Premise)
+a6: This contract is voidable (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a3",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a3",
+      "premises": [
+        "a2"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a3",
+      "premises": [
+        "a4"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a3",
+      "premises": [
+        "a5"
+      ],
+      "type": "defeasible"
+    }
+  ]
+}
+
+3. The Platypus Syllogism
+Prompt: If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.
+
+Atoms:
+
+a1: An entity is a mammal (Axiom)
+a2: An entity possesses mammary glands (Axiom)
+a3: An entity produces milk (Axiom)
+a4: This entity is a platypus (Premise)
+a5: This entity does not have nipples (Premise)
+a6: This entity produces milk (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a2",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a3",
+      "premises": [
+        "a2"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a4",
+      "premises": [
+        "a1"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a6",
+      "premises": [
+        "a4",
+        "a2"
+      ],
+      "type": "defeasible"
+    }
+  ]
+}
+
+4. DNA Evidence (Contamination & Guilt)
+Prompt: The defendant is guilty if and only if the DNA evidence is a match. The DNA evidence is not a match because the sample was contaminated. Therefore, the defendant is not guilty.
+
+Atoms:
+
+a1: The defendant is guilty (Axiom)
+a2: The DNA evidence is a match (Axiom)
+a3: The DNA evidence is not a match (Premise)
+a4: The sample was contaminated (Premise)
+a5: The defendant is not guilty (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a1",
+      "premises": [
+        "a2"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a1",
+      "premises": [
+        "a3"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a3",
+      "premises": [
+        "a4"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a5",
+      "premises": [
+        "a3"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+5. Bob’s Health (Exercise & Diet)
+Prompt: Usually, if a person exercises and eats well, they are healthy. If a person is healthy, they have a high life expectancy. Bob exercises. Bob does not eat well.
+
+Atoms:
+
+a1: An entity exercises (Axiom)
+a2: An entity eats well (Axiom)
+a3: An entity is healthy (Axiom)
+a4: An entity has a high life expectancy (Axiom)
+a5: This entity is Bob (Premise)
+a6: This entity exercises (Premise)
+a7: This entity does not eat well (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a3",
+      "premises": [
+        "a6",
+        "a2"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a4",
+      "premises": [
+        "a3"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a3",
+      "premises": [
+        "a6",
+        "a2"
+      ],
+      "type": "defeasible"
+    }
+  ]
+}
+
+6. Hearsay & Admissibility
+Prompt: A statement is hearsay if it was made out of court. If a statement is hearsay, it is generally inadmissible unless an exception applies. This statement was made out of court. No exception applies. Therefore, this statement is inadmissible.
+
+Atoms:
+
+a1: A statement is hearsay (Axiom)
+a2: A statement was made out of court (Axiom)
+a3: A statement is generally inadmissible (Axiom)
+a4: An exception applies (Axiom)
+a5: This statement was made out of court (Premise)
+a6: No exception applies (Premise)
+a7: This statement is inadmissible (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a1",
+      "premises": [
+        "a2"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a3",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a3",
+      "premises": [
+        "a5"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a7",
+      "premises": [
+        "a3",
+        "a6"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+7. Faulty Sensor (Affirming the Consequent)
+Prompt: If the engine is overheating, the warning light turns red. If the sensor is faulty, the warning light turns red. The warning light is red. Therefore, the engine is overheating and the sensor is faulty.
+
+Atoms:
+
+a1: The engine is overheating (Axiom)
+a2: The warning light turns red (Axiom)
+a3: The sensor is faulty (Axiom)
+a4: The warning light is red (Premise)
+a5: The engine is overheating and the sensor is faulty (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a2",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a2",
+      "premises": [
+        "a3"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a5",
+      "premises": [
+        "a1",
+        "a3"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+8. Epistemology (Knowledge Requirements)
+Prompt: Knowledge requires belief, truth, and justification. Smith believes the earth is flat. It is not the case that the earth is flat. Therefore, Smith does not have knowledge.
+
+Atoms:
+
+a1: Knowledge requires belief (Axiom)
+a2: Knowledge requires truth (Axiom)
+a3: Knowledge requires justification (Axiom)
+a4: Smith believes the earth is flat (Premise)
+a5: The earth is not flat (Premise)
+a6: Smith does not have knowledge (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a6",
+      "premises": [
+        "a4",
+        "a5"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a1",
+      "premises": [
+        "a6"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a2",
+      "premises": [
+        "a6"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a3",
+      "premises": [
+        "a6"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+9. Geography (Lyon & Euro)
+Prompt: If a city is in France, it is in Europe. Lyon is in France. If a city is in Europe, it uses the Euro. Therefore, Lyon uses the Euro.
+
+Atoms:
+
+a1: A city is in France (Axiom)
+a2: A city is in Europe (Axiom)
+a3: Lyon is in France (Premise)
+a4: A city is in Europe (Axiom)
+a5: A city uses the Euro (Axiom)
+a6: Lyon uses the Euro (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a2",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a5",
+      "premises": [
+        "a2"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a2",
+      "premises": [
+        "a3",
+        "a1"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r4",
+      "conclusion": "a6",
+      "premises": [
+        "a5",
+        "a4"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+10. The Tomato (Botanical vs. Cultural)
+Prompt: The fruit is a tomato. If a fruit is a tomato, it is botanically a fruit. If a fruit is a tomato, it is culturally a vegetable.
+
+Atoms:
+
+a1: This entity is a fruit (Premise)
+a2: This entity is a tomato (Premise)
+a3: An entity is a fruit (Axiom)
+a4: An entity is botanically a fruit (Axiom)
+a5: An entity is culturally a vegetable (Axiom)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a4",
+      "premises": [
+        "a2"
+      ],
+      "type": "strict"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a5",
+      "premises": [
+        "a2"
+      ],
+      "type": "strict"
+    }
+  ]
+}
+
+11. Scheduled Drill (The Undercutter)
+Prompt: If the alarm sounds, everyone must evacuate. The alarm is sounding. It is not the case that everyone must evacuate because it is a scheduled drill.
+
+Atoms:
+
+a1: The alarm sounds (Axiom)
+a2: Everyone must evacuate (Axiom)
+a3: The alarm is sounding (Premise)
+a4: It is not the case that everyone must evacuate (Premise)
+a5: It is a scheduled drill (Premise)
+
+Rules:
+
+JSON
+
+{
+  "rules": [
+    {
+      "id": "r1",
+      "conclusion": "a2",
+      "premises": [
+        "a1"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r2",
+      "conclusion": "a2",
+      "premises": [
+        "a3"
+      ],
+      "type": "defeasible"
+    },
+    {
+      "id": "r3",
+      "conclusion": "a4",
+      "premises": [
+        "a5"
+      ],
+      "type": "strict"
+    }
+  ]
+}

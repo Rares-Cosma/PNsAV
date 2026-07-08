@@ -1,0 +1,56 @@
+from model import Model
+from schema import atom_schema, argument_schema, rule_schema
+import symbolic_data_repair.atom as atom
+import symbolic_data_repair.arg as arg
+import symbolic_data_repair.rule as rule
+
+class Pipeline:
+    def __init__(self, prompt_path):
+        self.model = Model(prompt_path)
+        self.logs = []
+        self.atom_schema = atom_schema
+        self.rule_schema = rule_schema
+        self.arg_schema = argument_schema
+    
+    def execute_orchestration(self, agents, data, schemas):
+        atoms = self.model.run_agent(
+            agent_id=agents[0],
+            data=[data],
+            schema=schemas[0],
+            system_prompt=self.model.ATOM_PROMPT
+        )
+
+        atom_status, atom_log = atom.validate_atoms(atoms, data)
+        self.logs.append(atom_log)
+        atoms = atom.remove_duplicate_atoms(atoms)
+
+        rules = self.model.run_agent(
+            agent_id=agents[1],
+            data=[data,str(atoms)],
+            schema=schemas[1],
+            system_prompt=self.model.RULE_PROMPT
+        )
+
+        rules_status, rules_log = rule.validate_rules(rules)
+        self.logs.append(rules_log)
+        #rules = rule.remove_identity(rules)
+        #rules = rule.remove_duplicate_rules(str(rules))
+
+        args = self.model.run_agent(
+            agent_id=agents[2],
+            data=[data,str(atoms),str(rules)],
+            schema=schemas[2],
+            system_prompt=self.model.ARG_PROMPT
+        )
+
+        args_status, args_log = arg.validate_arguments(args, rules)
+        self.logs.append(args_log)
+
+        print("Logs:")
+        for log in self.logs:
+            print(log)
+
+        return atoms, rules, args
+
+    def generate_attacks(self, atoms, rules, args):
+        return 1

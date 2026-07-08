@@ -1,546 +1,364 @@
-Here is the clean, formatted mapping for all 11 prompts. Each section includes the Original Prompt, the Atoms list (one per line), and the expanded JSON Ruleset.
-
-1. The Legal Document (Integrity & Enforceability)
 Prompt: While it is generally held that a signature on a page constitutes a binding agreement, one might argue that if the ink is faded or the parchment is brittle, the integrity of the document is compromised. It could be argued that a compromised document is not legally enforceable. This specific document has faded ink. However, it is not necessarily the case that the document is unenforceable because it was notarized before the fading occurred.
 
-Atoms:
+Atoms: {"atoms":[{"id":"a1","text":"A signature on a page constitutes a binding agreement","kb_type":"premise","source_quote":"a signature on a page constitutes a binding agreement"},{"id":"a2","text":"The ink is faded","kb_type":"premise","source_quote":"the ink is faded"},{"id":"a3","text":"The parchment is brittle","kb_type":"premise","source_quote":"the parchment is brittle"},{"id":"a4","text":"The integrity of the document is compromised","kb_type":"premise","source_quote":"the integrity of the document is compromised"},{"id":"a5","text":"A compromised document is not legally enforceable","kb_type":"premise","source_quote":"a compromised document is not legally enforceable"},{"id":"a6","text":"This specific document has faded ink","kb_type":"premise","source_quote":"This specific document has faded ink"},{"id":"a7","text":"It is not necessarily the case that the document is unenforceable","kb_type":"premise","source_quote":"it is not necessarily the case that the document is unenforceable"},{"id":"a8","text":"The document was notarized before the fading occurred","kb_type":"premise","source_quote":"it was notarized before the fading occurred"}]}
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a4', 'premises': ['a2', 'a3'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a5', 'premises': ['a4'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a5', 'premises': ['a6'], 'type': 'defeasible'}, {'id': 'r4', 'conclusion': 'a7', 'premises': ['a8'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6),A7(a7),A8(a8) | P2:A5(a4)<-r1[A2,A3], A6(a5)<-r2[A5], A7(a5)<-r3[A6], A8(a7)<-r4[A8] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":"r1","sub_arguments":["A2","A3"],"type":"defeasible"},{"id":"A6","conclusion":"a5","top_rule":"r2","sub_arguments":["A5"],"type":"defeasible"},{"id":"A7","conclusion":"a7","top_rule":"r3","sub_arguments":["A6"],"type":"defeasible"},{"id":"A8","conclusion":"a7","top_rule":"r4","sub_arguments":["A8"],"type":"defeasible"}]}
+Prompt: 
+If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
 
-a1: A signature on a page constitutes a binding agreement (Axiom)
-a2: The ink is faded (Premise)
-a3: The parchment is brittle (Premise)
-a4: The integrity of the document is compromised (Axiom)
-a5: A compromised document is not legally enforceable (Axiom)
-a6: This specific document has faded ink (Premise)
-a7: The document is notarized before the fading occurred (Premise)
-a8: The document is not unenforceable (Axiom)
+Atoms: {"atoms":[{"id":"a1","text":"A contract is signed under duress","kb_type":"premise","source_quote":"contract is signed under duress"},{"id":"a2","text":"A signatory is a minor","kb_type":"premise","source_quote":"signatory is a minor"},{"id":"a3","text":"A contract is voidable","kb_type":"premise","source_quote":"the contract is typically voidable"}]}
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a3', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a3', 'premises': ['a2'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a3', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r4', 'conclusion': 'a3', 'premises': ['a2'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3) | P2:A4(a3)<-r1[A1], A5(a3)<-r2[A2] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a3","top_rule":"r1","sub_arguments":["A1"],"type":"defeasible"},{"id":"A5","conclusion":"a3","top_rule":"r2","sub_arguments":["A2"],"type":"defeasible"}]}
+Prompt: 
+If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.
 
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a4",
-      "premises": [
-        "a2",
-        "a3"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "An entity is a mammal",
+      "kb_type": "premise",
+      "source_quote": "an entity is a mammal"
     },
     {
-      "id": "r2",
-      "conclusion": "a5",
-      "premises": [
-        "a4"
-      ],
-      "type": "strict"
+      "id": "a2",
+      "text": "An entity possesses mammary glands",
+      "kb_type": "premise",
+      "source_quote": "it possesses mammary glands"
     },
     {
-      "id": "r3",
-      "conclusion": "a8",
-      "premises": [
-        "a6",
-        "a7"
-      ],
-      "type": "defeasible"
+      "id": "a3",
+      "text": "An entity produces milk",
+      "kb_type": "premise",
+      "source_quote": "it produces milk"
+    },
+    {
+      "id": "a4",
+      "text": "A platypus is a mammal",
+      "kb_type": "premise",
+      "source_quote": "A platypus is a mammal"
+    },
+    {
+      "id": "a5",
+      "text": "A platypus does not have nipples",
+      "kb_type": "premise",
+      "source_quote": "it does not have nipples"
+    },
+    {
+      "id": "a6",
+      "text": "A platypus produces milk",
+      "kb_type": "premise",
+      "source_quote": "a platypus produces milk"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a2', 'premises': ['a1'], 'type': 'strict'}, {'id': 'r2', 'conclusion': 'a3', 'premises': ['a2'], 'type': 'strict'}, {'id': 'r3', 'conclusion': 'a3', 'premises': ['a4'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6) | P2:A5(a2)<-r1[A1], A6(a3)<-r2[A5], A7(a3)<-r3[A4] | P3:Invalid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a2","top_rule":"r1","sub_arguments":["A1"],"type":"strict"},{"id":"A6","conclusion":"a3","top_rule":"r2","sub_arguments":["A5"],"type":"strict"},{"id":"A7","conclusion":"a3","top_rule":"r3","sub_arguments":["A4"],"type":"defeasible"}]}
+Prompt: 
+The defendant is guilty if and only if the DNA evidence is a match. The DNA evidence is not a match because the sample was contaminated. Therefore, the defendant is not guilty.
 
-2. Contract Duress (Minority Status)
-Prompt: If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
-
-Atoms:
-
-a1: A contract is signed under duress (Axiom)
-a2: A signatory is a minor (Axiom)
-a3: A contract is voidable (Axiom)
-a4: This contract was signed under duress (Premise)
-a5: This signatory is a minor (Premise)
-a6: This contract is voidable (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a3",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "The defendant is guilty",
+      "kb_type": "premise",
+      "source_quote": "The defendant is guilty"
     },
     {
-      "id": "r2",
-      "conclusion": "a3",
-      "premises": [
-        "a2"
-      ],
-      "type": "defeasible"
+      "id": "a2",
+      "text": "The DNA evidence is a match",
+      "kb_type": "premise",
+      "source_quote": "the DNA evidence is a match"
     },
     {
-      "id": "r3",
-      "conclusion": "a3",
-      "premises": [
-        "a4"
-      ],
-      "type": "defeasible"
+      "id": "a3",
+      "text": "The DNA evidence is not a match",
+      "kb_type": "premise",
+      "source_quote": "The DNA evidence is not a match"
     },
     {
-      "id": "r4",
-      "conclusion": "a3",
-      "premises": [
-        "a5"
-      ],
-      "type": "defeasible"
+      "id": "a4",
+      "text": "The sample was contaminated",
+      "kb_type": "premise",
+      "source_quote": "the sample was contaminated"
+    },
+    {
+      "id": "a5",
+      "text": "The defendant is not guilty",
+      "kb_type": "premise",
+      "source_quote": "the defendant is not guilty"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a1', 'premises': ['a2'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a2', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a3', 'premises': ['a4'], 'type': 'defeasible'}, {'id': 'r4', 'conclusion': 'a5', 'premises': ['a3'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5) | P2:A6(a1)<-r1[A2], A7(a2)<-r2[A1], A8(a3)<-r3[A4], A9(a5)<-r4[A3] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a1","top_rule":"r1","sub_arguments":["A2"],"type":"defeasible"},{"id":"A7","conclusion":"a2","top_rule":"r2","sub_arguments":["A1"],"type":"defeasible"},{"id":"A8","conclusion":"a3","top_rule":"r3","sub_arguments":["A4"],"type":"defeasible"},{"id":"A9","conclusion":"a5","top_rule":"r4","sub_arguments":["A3"],"type":"defeasible"}]}
+Prompt: 
+Usually, if a person exercises and eats well, they are healthy. If a person is healthy, they have a high life expectancy. Bob exercises. Bob does not eat well.
 
-3. The Platypus Syllogism
-Prompt: If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.
-
-Atoms:
-
-a1: An entity is a mammal (Axiom)
-a2: An entity possesses mammary glands (Axiom)
-a3: An entity produces milk (Axiom)
-a4: This entity is a platypus (Premise)
-a5: This entity does not have nipples (Premise)
-a6: This entity produces milk (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a2",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "An entity exercises",
+      "kb_type": "premise",
+      "source_quote": "a person exercises"
     },
     {
-      "id": "r2",
-      "conclusion": "a3",
-      "premises": [
-        "a2"
-      ],
-      "type": "defeasible"
+      "id": "a2",
+      "text": "An entity eats well",
+      "kb_type": "premise",
+      "source_quote": "eats well"
     },
     {
-      "id": "r3",
-      "conclusion": "a4",
-      "premises": [
-        "a1"
-      ],
-      "type": "strict"
+      "id": "a3",
+      "text": "An entity is healthy",
+      "kb_type": "premise",
+      "source_quote": "they are healthy"
     },
     {
-      "id": "r4",
-      "conclusion": "a6",
-      "premises": [
-        "a4",
-        "a2"
-      ],
-      "type": "defeasible"
+      "id": "a4",
+      "text": "An entity has a high life expectancy",
+      "kb_type": "premise",
+      "source_quote": "they have a high life expectancy"
+    },
+    {
+      "id": "a5",
+      "text": "This entity is Bob",
+      "kb_type": "premise",
+      "source_quote": "Bob"
+    },
+    {
+      "id": "a6",
+      "text": "This entity exercises",
+      "kb_type": "premise",
+      "source_quote": "Bob exercises"
+    },
+    {
+      "id": "a7",
+      "text": "This entity does not eat well",
+      "kb_type": "premise",
+      "source_quote": "Bob does not eat well"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a3', 'premises': ['a1', 'a2'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a4', 'premises': ['a3'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a3', 'premises': ['a6', 'a7'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6),A7(a7) | P2:A8(a3)<-r1[A1,A2], A9(a3)<-r3[A6,A7], A10(a4)<-r2[A8] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a6","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A7","conclusion":"a7","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A8","conclusion":"a3","top_rule":"r1","sub_arguments":["A1","A2"],"type":"defeasible"},{"id":"A9","conclusion":"a3","top_rule":"r3","sub_arguments":["A6","A7"],"type":"defeasible"},{"id":"A10","conclusion":"a4","top_rule":"r2","sub_arguments":["A8"],"type":"defeasible"}]}
+Prompt: 
+A statement is hearsay if it was made out of court. If a statement is hearsay, it is generally inadmissible unless an exception applies. This statement was made out of court. No exception applies. Therefore, this statement is inadmissible.
 
-4. DNA Evidence (Contamination & Guilt)
-Prompt: The defendant is guilty if and only if the DNA evidence is a match. The DNA evidence is not a match because the sample was contaminated. Therefore, the defendant is not guilty.
-
-Atoms:
-
-a1: The defendant is guilty (Axiom)
-a2: The DNA evidence is a match (Axiom)
-a3: The DNA evidence is not a match (Premise)
-a4: The sample was contaminated (Premise)
-a5: The defendant is not guilty (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a1",
-      "premises": [
-        "a2"
-      ],
-      "type": "strict"
+      "id": "a1",
+      "text": "A statement is hearsay",
+      "kb_type": "premise",
+      "source_quote": "A statement is hearsay"
     },
     {
-      "id": "r2",
-      "conclusion": "a1",
-      "premises": [
-        "a3"
-      ],
-      "type": "strict"
+      "id": "a2",
+      "text": "A statement was made out of court",
+      "kb_type": "premise",
+      "source_quote": "made out of court"
     },
     {
-      "id": "r3",
-      "conclusion": "a3",
-      "premises": [
-        "a4"
-      ],
-      "type": "strict"
+      "id": "a3",
+      "text": "A statement is generally inadmissible",
+      "kb_type": "premise",
+      "source_quote": "it is generally inadmissible"
     },
     {
-      "id": "r4",
-      "conclusion": "a5",
-      "premises": [
-        "a3"
-      ],
-      "type": "strict"
+      "id": "a4",
+      "text": "An exception applies",
+      "kb_type": "premise",
+      "source_quote": "an exception applies"
+    },
+    {
+      "id": "a5",
+      "text": "This statement was made out of court",
+      "kb_type": "premise",
+      "source_quote": "This statement was made out of court"
+    },
+    {
+      "id": "a6",
+      "text": "No exception applies",
+      "kb_type": "premise",
+      "source_quote": "No exception applies"
+    },
+    {
+      "id": "a7",
+      "text": "This statement is inadmissible",
+      "kb_type": "premise",
+      "source_quote": "this statement is inadmissible"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a1', 'premises': ['a2'], 'type': 'strict'}, {'id': 'r2', 'conclusion': 'a3', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a7', 'premises': ['a5', 'a6'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6),A7(a7) | P2:A5(a1)<-r1[A2], A6(a3)<-r2[A1], A7(a7)<-r3[A5,A6] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a6","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A7","conclusion":"a7","top_rule":"r1","sub_arguments":["A2"],"type":"strict"},{"id":"A8","conclusion":"a3","top_rule":"r2","sub_arguments":["A1"],"type":"defeasible"},{"id":"A9","conclusion":"a7","top_rule":"r3","sub_arguments":["A5","A6"],"type":"defeasible"}]}
+Prompt: 
+If the engine is overheating, the warning light turns red. If the sensor is faulty, the warning light turns red. The warning light is red. Therefore, the engine is overheating and the sensor is faulty.
 
-5. Bob’s Health (Exercise & Diet)
-Prompt: Usually, if a person exercises and eats well, they are healthy. If a person is healthy, they have a high life expectancy. Bob exercises. Bob does not eat well.
+Atoms: {"atoms":[{"id":"a1","text":"The engine is overheating","kb_type":"premise","source_quote":"the engine is overheating"},{"id":"a2","text":"The warning light turns red","kb_type":"premise","source_quote":"the warning light turns red"},{"id":"a3","text":"The sensor is faulty","kb_type":"premise","source_quote":"the sensor is faulty"},{"id":"a4","text":"The warning light is red","kb_type":"premise","source_quote":"The warning light is red"}]}
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a2', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a2', 'premises': ['a3'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a1', 'premises': ['a4'], 'type': 'defeasible'}, {'id': 'r4', 'conclusion': 'a3', 'premises': ['a4'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4) | P2:A5(a2)<-r1[A1], A6(a2)<-r2[A3], A7(a1)<-r3[A4], A8(a3)<-r4[A4] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a2","top_rule":"r1","sub_arguments":["A1"],"type":"defeasible"},{"id":"A6","conclusion":"a2","top_rule":"r2","sub_arguments":["A3"],"type":"defeasible"},{"id":"A7","conclusion":"a1","top_rule":"r3","sub_arguments":["A4"],"type":"defeasible"},{"id":"A8","conclusion":"a3","top_rule":"r4","sub_arguments":["A4"],"type":"defeasible"}]}
+Prompt: 
+Knowledge requires belief, truth, and justification. Smith believes the earth is flat. It is not the case that the earth is flat. Therefore, Smith does not have knowledge.
 
-Atoms:
-
-a1: An entity exercises (Axiom)
-a2: An entity eats well (Axiom)
-a3: An entity is healthy (Axiom)
-a4: An entity has a high life expectancy (Axiom)
-a5: This entity is Bob (Premise)
-a6: This entity exercises (Premise)
-a7: This entity does not eat well (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a3",
-      "premises": [
-        "a6",
-        "a2"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "Knowledge requires belief",
+      "kb_type": "premise",
+      "source_quote": "Knowledge requires belief"
     },
     {
-      "id": "r2",
-      "conclusion": "a4",
-      "premises": [
-        "a3"
-      ],
-      "type": "defeasible"
+      "id": "a2",
+      "text": "Knowledge requires truth",
+      "kb_type": "premise",
+      "source_quote": "Knowledge requires truth"
     },
     {
-      "id": "r3",
-      "conclusion": "a3",
-      "premises": [
-        "a6",
-        "a2"
-      ],
-      "type": "defeasible"
+      "id": "a3",
+      "text": "Knowledge requires justification",
+      "kb_type": "premise",
+      "source_quote": "Knowledge requires justification"
+    },
+    {
+      "id": "a4",
+      "text": "Smith believes the earth is flat",
+      "kb_type": "premise",
+      "source_quote": "Smith believes the earth is flat"
+    },
+    {
+      "id": "a5",
+      "text": "The earth is not flat",
+      "kb_type": "premise",
+      "source_quote": "It is not the case that the earth is flat"
+    },
+    {
+      "id": "a6",
+      "text": "Smith does not have knowledge",
+      "kb_type": "premise",
+      "source_quote": "Therefore, Smith does not have knowledge"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a6', 'premises': ['a4', 'a5'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6) | P2:A7(a6)<-r1[A4,A5] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a6","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A7","conclusion":"a6","top_rule":"r1","sub_arguments":["A4","A5"],"type":"defeasible"}]}
+Prompt: 
+If a city is in France, it is in Europe. Lyon is in France. If a city is in Europe, it uses the Euro. Therefore, Lyon uses the Euro.
 
-6. Hearsay & Admissibility
-Prompt: A statement is hearsay if it was made out of court. If a statement is hearsay, it is generally inadmissible unless an exception applies. This statement was made out of court. No exception applies. Therefore, this statement is inadmissible.
-
-Atoms:
-
-a1: A statement is hearsay (Axiom)
-a2: A statement was made out of court (Axiom)
-a3: A statement is generally inadmissible (Axiom)
-a4: An exception applies (Axiom)
-a5: This statement was made out of court (Premise)
-a6: No exception applies (Premise)
-a7: This statement is inadmissible (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a1",
-      "premises": [
-        "a2"
-      ],
-      "type": "strict"
+      "id": "a1",
+      "text": "A city is in France",
+      "kb_type": "premise",
+      "source_quote": "a city is in France"
     },
     {
-      "id": "r2",
-      "conclusion": "a3",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
+      "id": "a2",
+      "text": "A city is in Europe",
+      "kb_type": "premise",
+      "source_quote": "it is in Europe"
     },
     {
-      "id": "r3",
-      "conclusion": "a3",
-      "premises": [
-        "a5"
-      ],
-      "type": "defeasible"
+      "id": "a3",
+      "text": "Lyon is in France",
+      "kb_type": "premise",
+      "source_quote": "Lyon is in France"
     },
     {
-      "id": "r4",
-      "conclusion": "a7",
-      "premises": [
-        "a3",
-        "a6"
-      ],
-      "type": "strict"
+      "id": "a4",
+      "text": "A city is in Europe",
+      "kb_type": "premise",
+      "source_quote": "a city is in Europe"
+    },
+    {
+      "id": "a5",
+      "text": "A city uses the Euro",
+      "kb_type": "premise",
+      "source_quote": "it uses the Euro"
+    },
+    {
+      "id": "a6",
+      "text": "Lyon uses the Euro",
+      "kb_type": "premise",
+      "source_quote": "Lyon uses the Euro"
     }
   ]
 }
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a2', 'premises': ['a1'], 'type': 'strict'}, {'id': 'r2', 'conclusion': 'a5', 'premises': ['a2'], 'type': 'defeasible'}, {'id': 'r3', 'conclusion': 'a2', 'premises': ['a3'], 'type': 'defeasible'}, {'id': 'r4', 'conclusion': 'a6', 'premises': ['a3', 'a2'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5),A6(a6) | P2:A5(a2)<-r1[A1], A7(a5)<-r2[A5], A8(a2)<-r3[A3], A9(a6)<-r4[A3,A8] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a6","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A7","conclusion":"a2","top_rule":"r1","sub_arguments":["A1"],"type":"strict"},{"id":"A8","conclusion":"a5","top_rule":"r2","sub_arguments":["A7"],"type":"defeasible"},{"id":"A9","conclusion":"a2","top_rule":"r3","sub_arguments":["A3"],"type":"defeasible"},{"id":"A10","conclusion":"a6","top_rule":"r4","sub_arguments":["A3","A9"],"type":"defeasible"}]}
+Prompt: 
+The fruit is a tomato. If a fruit is a tomato, it is botanically a fruit. If a fruit is a tomato, it is culturally a vegetable.
 
-7. Faulty Sensor (Affirming the Consequent)
-Prompt: If the engine is overheating, the warning light turns red. If the sensor is faulty, the warning light turns red. The warning light is red. Therefore, the engine is overheating and the sensor is faulty.
-
-Atoms:
-
-a1: The engine is overheating (Axiom)
-a2: The warning light turns red (Axiom)
-a3: The sensor is faulty (Axiom)
-a4: The warning light is red (Premise)
-a5: The engine is overheating and the sensor is faulty (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a2",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "The fruit is a tomato",
+      "kb_type": "premise",
+      "source_quote": "The fruit is a tomato"
     },
     {
-      "id": "r2",
-      "conclusion": "a2",
-      "premises": [
-        "a3"
-      ],
-      "type": "defeasible"
+      "id": "a2",
+      "text": "A fruit is a tomato",
+      "kb_type": "premise",
+      "source_quote": "a fruit is a tomato"
     },
     {
-      "id": "r3",
-      "conclusion": "a5",
-      "premises": [
-        "a1",
-        "a3"
-      ],
-      "type": "strict"
+      "id": "a3",
+      "text": "It is botanically a fruit",
+      "kb_type": "premise",
+      "source_quote": "it is botanically a fruit"
+    },
+    {
+      "id": "a4",
+      "text": "A fruit is a tomato",
+      "kb_type": "premise",
+      "source_quote": "a fruit is a tomato"
+    },
+    {
+      "id": "a5",
+      "text": "It is culturally a vegetable",
+      "kb_type": "premise",
+      "source_quote": "it is culturally a vegetable"
     }
   ]
 }
-
-8. Epistemology (Knowledge Requirements)
-Prompt: Knowledge requires belief, truth, and justification. Smith believes the earth is flat. It is not the case that the earth is flat. Therefore, Smith does not have knowledge.
-
-Atoms:
-
-a1: Knowledge requires belief (Axiom)
-a2: Knowledge requires truth (Axiom)
-a3: Knowledge requires justification (Axiom)
-a4: Smith believes the earth is flat (Premise)
-a5: The earth is not flat (Premise)
-a6: Smith does not have knowledge (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a3', 'premises': ['a2'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a5', 'premises': ['a4'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4),A5(a5) | P2:A6(a3)<-r1[A2], A7(a5)<-r2[A4] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a5","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A6","conclusion":"a3","top_rule":"r1","sub_arguments":["A2"],"type":"defeasible"},{"id":"A7","conclusion":"a5","top_rule":"r2","sub_arguments":["A4"],"type":"defeasible"}]}
+Prompt: 
+If the alarm sounds, everyone must evacuate. The alarm is sounding. It is not the case that everyone must evacuate because it is a scheduled drill.
+Atoms: {
+  "atoms": [
     {
-      "id": "r1",
-      "conclusion": "a6",
-      "premises": [
-        "a4",
-        "a5"
-      ],
-      "type": "defeasible"
+      "id": "a1",
+      "text": "The alarm sounds",
+      "kb_type": "premise",
+      "source_quote": "the alarm sounds"
     },
     {
-      "id": "r2",
-      "conclusion": "a1",
-      "premises": [
-        "a6"
-      ],
-      "type": "strict"
+      "id": "a2",
+      "text": "Everyone must evacuate",
+      "kb_type": "premise",
+      "source_quote": "everyone must evacuate"
     },
     {
-      "id": "r3",
-      "conclusion": "a2",
-      "premises": [
-        "a6"
-      ],
-      "type": "strict"
+      "id": "a3",
+      "text": "It is a scheduled drill",
+      "kb_type": "premise",
+      "source_quote": "it is a scheduled drill"
     },
     {
-      "id": "r4",
-      "conclusion": "a3",
-      "premises": [
-        "a6"
-      ],
-      "type": "strict"
+      "id": "a4",
+      "text": "It is not the case that everyone must evacuate",
+      "kb_type": "premise",
+      "source_quote": "It is not the case that everyone must evacuate"
     }
   ]
 }
-
-9. Geography (Lyon & Euro)
-Prompt: If a city is in France, it is in Europe. Lyon is in France. If a city is in Europe, it uses the Euro. Therefore, Lyon uses the Euro.
-
-Atoms:
-
-a1: A city is in France (Axiom)
-a2: A city is in Europe (Axiom)
-a3: Lyon is in France (Premise)
-a4: A city is in Europe (Axiom)
-a5: A city uses the Euro (Axiom)
-a6: Lyon uses the Euro (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
-    {
-      "id": "r1",
-      "conclusion": "a2",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
-    },
-    {
-      "id": "r2",
-      "conclusion": "a5",
-      "premises": [
-        "a2"
-      ],
-      "type": "defeasible"
-    },
-    {
-      "id": "r3",
-      "conclusion": "a2",
-      "premises": [
-        "a3",
-        "a1"
-      ],
-      "type": "strict"
-    },
-    {
-      "id": "r4",
-      "conclusion": "a6",
-      "premises": [
-        "a5",
-        "a4"
-      ],
-      "type": "strict"
-    }
-  ]
-}
-
-10. The Tomato (Botanical vs. Cultural)
-Prompt: The fruit is a tomato. If a fruit is a tomato, it is botanically a fruit. If a fruit is a tomato, it is culturally a vegetable.
-
-Atoms:
-
-a1: This entity is a fruit (Premise)
-a2: This entity is a tomato (Premise)
-a3: An entity is a fruit (Axiom)
-a4: An entity is botanically a fruit (Axiom)
-a5: An entity is culturally a vegetable (Axiom)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
-    {
-      "id": "r1",
-      "conclusion": "a4",
-      "premises": [
-        "a2"
-      ],
-      "type": "strict"
-    },
-    {
-      "id": "r2",
-      "conclusion": "a5",
-      "premises": [
-        "a2"
-      ],
-      "type": "strict"
-    }
-  ]
-}
-
-11. Scheduled Drill (The Undercutter)
-Prompt: If the alarm sounds, everyone must evacuate. The alarm is sounding. It is not the case that everyone must evacuate because it is a scheduled drill.
-
-Atoms:
-
-a1: The alarm sounds (Axiom)
-a2: Everyone must evacuate (Axiom)
-a3: The alarm is sounding (Premise)
-a4: It is not the case that everyone must evacuate (Premise)
-a5: It is a scheduled drill (Premise)
-
-Rules:
-
-JSON
-
-{
-  "rules": [
-    {
-      "id": "r1",
-      "conclusion": "a2",
-      "premises": [
-        "a1"
-      ],
-      "type": "defeasible"
-    },
-    {
-      "id": "r2",
-      "conclusion": "a2",
-      "premises": [
-        "a3"
-      ],
-      "type": "defeasible"
-    },
-    {
-      "id": "r3",
-      "conclusion": "a4",
-      "premises": [
-        "a5"
-      ],
-      "type": "strict"
-    }
-  ]
-}
+Rules: {'rules': [{'id': 'r1', 'conclusion': 'a2', 'premises': ['a1'], 'type': 'defeasible'}, {'id': 'r2', 'conclusion': 'a4', 'premises': ['a3'], 'type': 'defeasible'}]}
+Arguments: {"scratchpad":"P1:A1(a1),A2(a2),A3(a3),A4(a4) | P2:A5(a2)<-r1[A1], A6(a4)<-r2[A3] | P3:Valid","arguments":[{"id":"A1","conclusion":"a1","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A2","conclusion":"a2","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A3","conclusion":"a3","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A4","conclusion":"a4","top_rule":null,"sub_arguments":[],"type":"atomic"},{"id":"A5","conclusion":"a2","top_rule":"r1","sub_arguments":["A1"],"type":"defeasible"},{"id":"A6","conclusion":"a4","top_rule":"r2","sub_arguments":["A3"],"type":"defeasible"}]}

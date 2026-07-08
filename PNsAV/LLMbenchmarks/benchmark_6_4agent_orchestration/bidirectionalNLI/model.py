@@ -1,3 +1,8 @@
+"""
+This module only tests atom correctness.
+Acest modul testeaza doar corectitudinea propozitiilor.
+"""
+
 import openai
 from schema import atom_schema, rule_schema, argument_schema
 from pathlib import Path
@@ -28,6 +33,14 @@ with open(attack_path, "r", encoding="utf-8") as f:
 client = openai.OpenAI()
 
 def respond(text_list, system_prompt: str, schema: dict):
+    """
+    text_list: list of strings to be sent to the LLM
+    system_prompt: string to be used as the system prompt for the LLM
+    schema: dictionary representing the JSON schema for the expected response format
+    
+    Returns the LLM's response as a string, following the JSON schema.
+    Returneaza raspunsul LLM ca un sir de caractere, respectand structura JSON.
+    """
     messages = [{"role": "system", "content": system_prompt}]
     
     for t in text_list:

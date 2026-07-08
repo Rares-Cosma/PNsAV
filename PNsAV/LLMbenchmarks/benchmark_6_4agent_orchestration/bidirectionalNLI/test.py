@@ -25,7 +25,8 @@ Output strictly in this JSON schema:
 """
 
 def evaluate_doc_with_llm(full_text, all_atoms_text):
-    """Uses GPT-4o-mini to judge logical entailment at the document level."""
+    """Uses GPT-4o-mini to judge logical entailment at the document level.
+       Utilizeaza GPT-4o-mini pentru a analiza corectitudinea translatiei la nivel de propozitie logica."""
     user_prompt = f"Original Text: '{full_text}'\nExtracted Atoms:\n{all_atoms_text}"
     
     response = client.chat.completions.create(
@@ -48,15 +49,13 @@ with open(data_path, "r") as f:
 
 early_stop = 150
 
-total_documents = 0
-forward_entailed_docs = 0
-backward_entailed_docs = 0
+total_documents         = 0
+forward_entailed_docs   = 0
+backward_entailed_docs  = 0
 strict_equivalence_docs = 0
 
-print("Starting Document-Level LLM-Judge Evaluation...\n")
-
 for full_text, meta in data.items():
-    if early_stop <= 0:
+    if early_stop<=0:
         break
     
     total_documents += 1
@@ -72,11 +71,11 @@ for full_text, meta in data.items():
     b_is_entailment = eval_result["backward_entailment"]
     
     if f_is_entailment:
-        forward_entailed_docs += 1
+        forward_entailed_docs+=1
     if b_is_entailment:
-        backward_entailed_docs += 1
+        backward_entailed_docs+=1
     if f_is_entailment and b_is_entailment:
-        strict_equivalence_docs += 1
+        strict_equivalence_docs+=1
         
     if not (f_is_entailment and b_is_entailment):
         print("\n--- DOCUMENT ENTAILMENT FAILURE ---")
@@ -86,9 +85,9 @@ for full_text, meta in data.items():
 
     early_stop -= 1
 
-forward_rate = (forward_entailed_docs / total_documents) * 100 if total_documents else 0
-backward_rate = (backward_entailed_docs / total_documents) * 100 if total_documents else 0
-strict_rate = (strict_equivalence_docs / total_documents) * 100 if total_documents else 0
+forward_rate = (forward_entailed_docs/total_documents)*100 if total_documents else 0
+backward_rate = (backward_entailed_docs/total_documents)*100 if total_documents else 0
+strict_rate = (strict_equivalence_docs/total_documents)* 00 if total_documents else 0
 
 print("\n" + "="*50)
 print("FINAL METRICS (DOCUMENT-LEVEL)")

@@ -1,0 +1,21 @@
+While it is generally held that a signature on a page constitutes a binding agreement, one might argue that if the ink is faded or the parchment is brittle, the integrity of the document is compromised. It could be argued that a compromised document is not legally enforceable. This specific document has faded ink. However, it is not necessarily the case that the document is unenforceable because it was notarized before the fading occurred.
+@
+If a contract is signed under duress or the signatory is a minor, the contract is typically voidable. This contract was signed under duress. This signatory is a minor. Therefore, the contract is voidable.
+@
+If an entity is a mammal, it possesses mammary glands. If it possesses mammary glands, it produces milk. A platypus is a mammal, but it does not have nipples. Therefore, a platypus produces milk.
+@
+The defendant is guilty if and only if the DNA evidence is a match. The DNA evidence is not a match because the sample was contaminated. Therefore, the defendant is not guilty.
+@
+Usually, if a person exercises and eats well, they are healthy. If a person is healthy, they have a high life expectancy. Bob exercises. Bob does not eat well.
+@
+A statement is hearsay if it was made out of court. If a statement is hearsay, it is generally inadmissible unless an exception applies. This statement was made out of court. No exception applies. Therefore, this statement is inadmissible.
+@
+If the engine is overheating, the warning light turns red. If the sensor is faulty, the warning light turns red. The warning light is red. Therefore, the engine is overheating and the sensor is faulty.
+@
+Knowledge requires belief, truth, and justification. Smith believes the earth is flat. It is not the case that the earth is flat. Therefore, Smith does not have knowledge.
+@
+If a city is in France, it is in Europe. Lyon is in France. If a city is in Europe, it uses the Euro. Therefore, Lyon uses the Euro.
+@
+The fruit is a tomato. If a fruit is a tomato, it is botanically a fruit. If a fruit is a tomato, it is culturally a vegetable.
+@
+If the alarm sounds, everyone must evacuate. The alarm is sounding. It is not the case that everyone must evacuate because it is a scheduled drill.

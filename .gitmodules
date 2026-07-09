@@ -1,3 +1,6 @@
 [submodule "arg-microtexts"]
 	path = arg-microtexts
 	url = https://github.com/peldszus/arg-microtexts.git
+[submodule "PNsAV/src/core/engine/pybind11"]
+	path = PNsAV/src/core/engine/pybind11
+	url = https://github.com/pybind/pybind11.git

@@ -48,11 +48,7 @@ class Pipeline:
         args_status, args_log = arg.validate_arguments(args, rules)
         self.logs.append(args_log)
 
-        print("Logs:")
-        for log in self.logs:
-            print(log)
-
-        return atoms, rules, args
+        return atoms, rules, args, self.logs
 
     def generate_attacks(self, rules, args):
         rules = ast.literal_eval(rules)

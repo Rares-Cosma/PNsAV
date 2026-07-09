@@ -1,5 +1,5 @@
 [submodule "arg-microtexts"]
-	path = arg-microtexts
+	path = PNsAV/evalDatasets/arg-microtexts
 	url = https://github.com/peldszus/arg-microtexts.git
 [submodule "PNsAV/src/core/engine/pybind11"]
 	path = PNsAV/src/core/engine/pybind11

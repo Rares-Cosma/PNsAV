@@ -9,6 +9,7 @@ struct Atom {
     std::string text;
     std::string kb_type;
     std::string source_quote;
+    double strength;
 };
 
 struct Rule {
@@ -16,6 +17,7 @@ struct Rule {
     std::string conclusion;
     std::vector<std::string> premises;
     std::string type;
+    double strength;
 };
 
 struct Argument {
@@ -24,6 +26,17 @@ struct Argument {
     std::optional<std::string> top_rule;
     std::vector<std::string> sub_arguments;
     std::string type;
+    double strength;
+};
+
+struct ArgumentAdj {
+    std::string id;
+    std::string conclusion;
+    std::optional<std::string> top_rule;
+    std::vector<std::string> sub_arguments;
+    std::string type;
+    double strength;
+    std::vector<std::string> adj;
 };
 
 struct Attack {

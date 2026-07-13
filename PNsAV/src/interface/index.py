@@ -92,14 +92,41 @@ with col_dreapta:
     nodes, edges = [], []
 
     if data:
+        print(data)
         data_packets = data.split("@")
 
         # data_packets[0] = atoms
         # data_packets[1] = rules
         # data_packets[2] = arguments
 
-        arguments = data_packets[2].split("\n")
+        arguments = data_packets[2].split("-")
+        attacks = data_packets[3].split("-")
+
+        for arg in arguments:
+            info = arg.split("|")
+            color = "#2865FF" if info[1] == "atomic" else "#FF5733"
+            size = 20 if info[1] == "atomic" else 25
+            if len(info)>=5:
+                nodes.append(
+                    Node(
+                        id=str(info[0]), 
+                        label=str(info[4]), 
+                        size=size, 
+                        color=color
+                    )
+                )
         
+        for attack in attacks:
+            info = attack.split("|")
+            print(info)
+            if len(info)==3:
+                edges.append(
+                    Edge(
+                        source=info[2],
+                        target=info[1],
+                        type="CURVE_SMOOTH"
+                    )
+                )
 
     config = Config(
         width="100%", 

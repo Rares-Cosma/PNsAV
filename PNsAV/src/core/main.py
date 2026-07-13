@@ -130,25 +130,28 @@ def main():
     engine.propagate_strengths(0.7,0,0.001)
 
     def print_atom(atom):
-        print(atom.id, atom.kb_type, atom.text, atom.strength)
+        print(atom.id, atom.kb_type, atom.text, atom.strength, sep="|", end="-")
 
     def print_rule(rule):
-        print(rule.id, rule.premises, rule.conclusion, rule.type, rule.strength)
+        print(rule.id, rule.premises, rule.conclusion, rule.type, rule.strength, sep="|", end="-")
 
     def print_arg(arg):
-        print(arg.id, arg.type, arg.top_rule, arg.sub_arguments, arg.strength, arg.conclusion, sep="|")
+        print(arg.id, arg.type, arg.top_rule, arg.sub_arguments, arg.strength, arg.conclusion, sep="|", end="-")
 
+    def print_attack(attack):
+        print(attack.type, attack.target, attack.attacker, sep="|", end="-")
 
-
-    #print("Cycles:", cycles)
     for i in engine.atoms:
         print_atom(i)
-    print("@")
+    print("@", end="")
     for i in engine.rules:
         print_rule(i)
-    print("@")
+    print("@", end="")
     for i in engine.arguments:
         print_arg(i)
+    print("@", end="")
+    for i in engine.attacks:
+        print_attack(i)
 
 if __name__ == "__main__":
     main()

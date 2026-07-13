@@ -92,25 +92,36 @@ with col_dreapta:
     nodes, edges = [], []
 
     if data:
-        print(data)
         data_packets = data.split("@")
+        print(data_packets)
 
         # data_packets[0] = atoms
         # data_packets[1] = rules
         # data_packets[2] = arguments
 
+        atoms = data_packets[0].split("-")
+        id2text_atom = dict()
+        for atom in atoms:
+            atom = atom.split("|")
+            if len(atom)>=3:
+                id2text_atom[atom[0]] = atom[2]
         arguments = data_packets[2].split("-")
         attacks = data_packets[3].split("-")
 
         for arg in arguments:
             info = arg.split("|")
-            color = "#2865FF" if info[1] == "atomic" else "#FF5733"
-            size = 20 if info[1] == "atomic" else 25
+
             if len(info)>=5:
+                color = "#2865FF" if info[1] == "atomic" else "#FF5733"
+                size = 20 if info[1] == "atomic" else 25
+
+                label = f"Argument {info[0]}\nType {info[1]}\nText {id2text_atom[info[5]]}"
+            
                 nodes.append(
                     Node(
                         id=str(info[0]), 
-                        label=str(info[4]), 
+                        label=str(info[4]),
+                        title=label,
                         size=size, 
                         color=color
                     )
@@ -119,7 +130,7 @@ with col_dreapta:
         for attack in attacks:
             info = attack.split("|")
             print(info)
-            if len(info)==3:
+            if len(info)>1:
                 edges.append(
                     Edge(
                         source=info[2],
@@ -134,6 +145,7 @@ with col_dreapta:
         directed=True, 
         physics=True, 
         hierarchical=False,
+        nodeHighlightBehavior=True,
         collapsible=False
     )
  

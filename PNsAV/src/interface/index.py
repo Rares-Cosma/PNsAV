@@ -1,35 +1,25 @@
 import streamlit as st
 from streamlit_agraph import agraph, Node, Edge, Config
+from st_click_detector import click_detector
+from pathlib import Path
+import subprocess
 import json
 from datetime import datetime
 
 st.set_page_config(initial_sidebar_state="collapsed")
 
 st.set_page_config(
-    page_title="PNsAV Analyzer",
-    page_icon="🛡️",
+    page_title="PNsAV",
+    page_icon="⚙️",
     layout="wide",
 )
 
+data = ""
 styles = ""
 with open("style.css", "r") as style_file:
     styles = style_file.read()
 
 st.html(f"<style>{styles}</style>")
-
-#datele date de rares in pdf
-DEFAULT_JSON = {
-    "atoms": [
-        {"id":"a1","text":"Inteligență Artificială","kb_type":"concept","source_quote": "IA principală"},
-        {"id":"a2","text":"Machine Learning","kb_type":"tehnologie","source_quote": "ML secundar"},
-        {"id":"a3","text":"Deep Learning","kb_type":"tehnologie","source_quote": "DL avansat"},
-        {"id":"a4","text":"Neural Networks","kb_type":"proces","source_quote": "Rețele"},
-        {"id":"a5","text":"Procesare Limbaj Natural","kb_type":"proces","source_quote": "NLP text"},
-        {"id":"a6","text":"Analiză","kb_type":"proces","source_quote": "Analiză logică"},
-        {"id":"a7","text":"Date","kb_type":"tehnologie","source_quote": "Date brute"},
-        {"id":"a8","text":"Algoritmi","kb_type":"tehnologie","source_quote": "Algoritmi matematici"}
-    ]
-}
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Workspace"
@@ -37,9 +27,9 @@ if "current_page" not in st.session_state:
 nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
 with nav_col1:
     st.html("""
-    <div class="nav-bar">
+    <div class="nav-bar" id="click">
         <div class="nav-logo">
-            🛡️ PNsAV Analyzer
+            ⚙️ PNsAV Analyzer
         </div>
     </div>
 """)
@@ -73,6 +63,19 @@ with col_stanga:
             st.session_state["analysed_text"] = user_text
         st.session_state["analysed_triggered"] = True
 
+        worker_path = Path(__file__).resolve().parent.parent / "core" / "main.py"
+
+        if st.session_state["analysed_text"]:
+            with st.spinner("Running background script..."):
+                process = subprocess.run(
+                    ["python", str(worker_path), st.session_state["analysed_text"]],
+                    capture_output=True,
+                    text=True,
+                    check=True 
+                )
+
+                data = process.stdout.strip()
+
     st.html("""
         <div class="custom-card" style="margin-top: 20px;">
             <div class="card-header" style="border:none; margin:0; padding:0;">ℹ️ INFORMAȚII</div>
@@ -86,29 +89,17 @@ with col_dreapta:
     st.subheader("GRAF")
     g_col1, g_col2 = st.columns([3, 1])
 
-    nodes = [
-        Node(id="IA", label="Inteligență Artificială", size=24, color="#f97316", title="Concept Principal"),
-        Node(id="ML", label="Machine Learning", size=18, color="#3b82f6", title="Tehnologie"),
-        Node(id="DL", label="Deep Learning", size=18, color="#3b82f6", title="Tehnologie"),
-        Node(id="NN", label="Neural Networks", size=18, color="#22c55e", title="Proces"),
-        Node(id="NLP", label="Procesare Limbaj Natural", size=18, color="#22c55e", title="Proces"),
-        Node(id="AN", label="Analiză", size=18, color="#22c55e", title="Proces"),
-        Node(id="DA", label="Date", size=18, color="#3b82f6", title="Tehnologie"),
-        Node(id="AL", label="Algoritmi", size=18, color="#3b82f6", title="Tehnologie")
-    ]
-    
-    edges = [
-        Edge(source="IA", target="ML", color="#3a4b6e"),
-        Edge(source="IA", target="NLP", color="#3a4b6e"),
-        Edge(source="ML", target="DL", color="#3a4b6e"),
-        Edge(source="DL", target="NN", color="#3a4b6e"),
-        Edge(source="NN", target="AL", color="#3a4b6e"),
-        Edge(source="AL", target="DA", color="#3a4b6e"),
-        Edge(source="DA", target="AN", color="#3a4b6e"),
-        Edge(source="AN", target="NLP", color="#3a4b6e"),
-        Edge(source="NLP", target="IA", color="#3a4b6e"),
-        Edge(source="NN", target="IA", color="#3a4b6e")
-    ]
+    nodes, edges = [], []
+
+    if data:
+        data_packets = data.split("@")
+
+        # data_packets[0] = atoms
+        # data_packets[1] = rules
+        # data_packets[2] = arguments
+
+        arguments = data_packets[2].split("\n")
+        
 
     config = Config(
         width="100%", 
@@ -152,36 +143,36 @@ with col_dreapta:
     with col_loguri:
             st.subheader("LOGURI")
             ora_curenta=datetime.now().strftime("%H:%M:%S:")
-            logs_html = """
+            logs_html = f"""
             <div class="logs-container">
             <div class="log-row">
                 <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ ora_acum }:</div>
+                <div class="log-time">{ ora_curenta }:</div>
                 <div class="log-text">Fișier încărcat: <span style="color:#3b82f6;">document.txt</span></div>
             </div>
             <div class="log-row">
                 <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora acum}</div>
+                <div class="log-time">{ora_curenta}</div>
                 <div class="log-text">Preprocesare text în curs...</div>
             </div>
             <div class="log-row">
                 <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora acum}</div>
+                <div class="log-time">{ora_curenta}</div>
                 <div class="log-text">Extracție entități realizată (28 entități găsite)</div>
             </div>
             <div class="log-row">
                 <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora acum}</div>
+                <div class="log-time">{ora_curenta}</div>
                 <div class="log-text">Analiză relații în curs...</div>
             </div>
             <div class="log-row">
                 <div class="log-dot dot-green"></div>
-                <div class="log-time">{ora acum}</div>
+                <div class="log-time">{ora_curenta}</div>
                 <div class="log-text" style="color:#22c55e;">Graf generat cu succes (9 noduri, 24 muchii)</div>
             </div>
             <div class="log-row">
                 <div class="log-dot dot-green"></div>
-                <div class="log-time">{ora acum}</div>
+                <div class="log-time">{ora_curenta}</div>
                 <div class="log-text" style="color:#22c55e;">Analiză încheiată cu succes</div>
             </div>
         </div>

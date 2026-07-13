@@ -48,8 +48,7 @@ def topological_sort_arguments(arguments):
     return [id_to_arg[aid] for aid in sorted_ids]
 
 
-data="Alex has a phone. Alex is caring. If a person has a phone and is caring, they buy a phone case. Alex has a phone case."
-
+data = "Alex has a phone. Alex is caring. If a person has a phone and is caring, they buy a phone case. Alex does not buy a phone case."
 pipeline = Pipeline("C:\\Users\\rares\\OneDrive\\Desktop\\infoed26\\PNsAV\\src\\agents_prompts")
 atoms, rules, args, logs = pipeline.execute_orchestration(
     agents=["gpt-5.4-mini", "gpt-5.4-mini", "gpt-5.4-mini"],
@@ -73,7 +72,7 @@ for atom in atoms["atoms"]:
     obj_atom.text = atom["text"]
     obj_atom.kb_type = atom["kb_type"]
     obj_atom.source_quote = atom["source_quote"]
-    obj_atom.strength = 0.9
+    obj_atom.strength = 1.0 if atom["kb_type"] == "axiom" else 0.9
     engine.add_atom(obj_atom)
 
 for rule in rules["rules"]:
@@ -118,10 +117,12 @@ for um in attacks["underminers"]:
     obj_attack.type = "underminer"
     engine.add_attack(obj_attack)
 
+engine.build_attack_map()
 engine.build_argumentadj_vector()
 
 cycles = engine.compute_cycles()
 engine.compute_argument_strengths()
+engine.propagate_strengths(0.7,0,0.001)
 
 def print_atom(atom):
     print(atom.id, atom.kb_type, atom.text, atom.strength)
@@ -131,6 +132,8 @@ def print_rule(rule):
 
 def print_arg(arg):
     print(arg.id, arg.type, arg.top_rule, arg.sub_arguments, arg.strength)
+
+
 
 print("Cycles:", cycles)
 print("Atoms:")

@@ -16,12 +16,14 @@ void Engine::add_attack(const Attack& attack) {
     attacks.push_back(attack);
 }
 
-void Engine::build_argumentadj_vector() {
-    std::unordered_map<std::string, std::vector<std::string>> attack_index;
+void Engine::build_attack_map() {
     for (const auto& attack : attacks) {
         attack_index[attack.attacker].push_back(attack.target);
+        inv_attack_index[attack.target].push_back(attack.attacker);
     }
+}
 
+void Engine::build_argumentadj_vector() {
     for (const auto& arg : arguments) {
         ArgumentAdj arg_adj;
         arg_adj.id = arg.id;
@@ -92,6 +94,57 @@ void Engine::compute_argument_strengths() {
                 }
             }
             arg.strength = top_rule_strength * min_subarg_strength;
+        }
+        int_str[arg.id] = arg.strength;
+    }
+}
+
+void Engine::propagate_strengths(double kappa, int iter, float epsilon){
+    std::unordered_map<std::string, double> new_strength;
+    if (iter>0) {
+        for (int i = 0; i < iter; i++){
+            for (auto& arg: arguments) {
+                double alpha = 0.0;
+                if (inv_attack_index.count(arg.id)) {
+                    for (auto& att_arg: inv_attack_index[arg.id]) {
+                        auto it = std::find_if(arguments.begin(), arguments.end(), [&att_arg](const Argument& index_arg) {
+                            return index_arg.id == att_arg;
+                        });
+                        if (it != arguments.end()) {
+                            alpha -= it->strength;
+                        }
+                    }
+                }
+                new_strength[arg.id] = int_str[arg.id] + kappa * std::tanh(alpha);
+            }
+            for (auto& arg : arguments) {
+                arg.strength = new_strength[arg.id];
+            }
+        }
+    } else {
+        int safe_cap = 10000;
+        float max_move = epsilon;
+        while (max_move >= epsilon && safe_cap-- > 0) {
+            max_move = 0.0;
+            for (auto& arg: arguments) {
+                double alpha = 0.0;
+                if (inv_attack_index.count(arg.id)) {
+                    for (auto& att_arg: inv_attack_index[arg.id]) {
+                        auto it = std::find_if(arguments.begin(), arguments.end(), [&att_arg](const Argument& index_arg) {
+                            return index_arg.id == att_arg;
+                        });
+                        if (it != arguments.end()) {
+                            alpha -= it->strength;
+                        }
+                    }
+                }
+                float move = std::abs(arg.strength - (int_str[arg.id] + kappa * std::tanh(alpha)));
+                if (move > max_move) max_move = move;
+                new_strength[arg.id] = int_str[arg.id] + kappa * std::tanh(alpha);
+            }
+            for (auto& arg : arguments) {
+                arg.strength = new_strength[arg.id];
+            }
         }
     }
 }

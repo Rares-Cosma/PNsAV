@@ -51,13 +51,15 @@ PYBIND11_MODULE(ArgEngine, m) {
         .def("add_rule", &Engine::add_rule)
         .def("add_argument", &Engine::add_argument)
         .def("add_attack", &Engine::add_attack)
+        .def("build_attack_map", &Engine::build_attack_map)
         .def("build_argumentadj_vector", &Engine::build_argumentadj_vector)
         .def("compute_cycles", &Engine::compute_cycles)
         .def("compute_argument_strengths", &Engine::compute_argument_strengths)
+        .def("propagate_strengths", &Engine::propagate_strengths)
         .def_readwrite("atoms", &Engine::atoms)
         .def_readwrite("rules", &Engine::rules)
         .def_readwrite("arguments", &Engine::arguments)
         .def_readwrite("attacks", &Engine::attacks)
-        .def_readwrite("argumentadj", &Engine::argumentadj);
-
+        .def_readwrite("argumentadj", &Engine::argumentadj)
+        .def_readwrite("logs", &Engine::logs);
 }

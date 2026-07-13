@@ -3,6 +3,7 @@
 #include <vector>
 #include <optional>
 #include <unordered_map>
+#include <cmath>
 
 struct Atom {
     std::string id;

@@ -23,18 +23,18 @@ def validate_rules(json_string):
 
     for r in inp["rules"]:
         if "premises" not in r or "conclusion" not in r:
-            logs.append("Required keys missing for rule: {}".format(r.get("id", "Unknown")))
+            logs.append(("Required keys missing for rule: {}".format(r.get("id", "Unknown")), "error"))
         if not isinstance(r["premises"], list):
-            logs.append("Invalid premises type for rule {}: {}".format(r.get("id", "Unknown"), r["premises"]))
+            logs.append(("Invalid premises type for rule {}: {}".format(r.get("id", "Unknown"), r["premises"]),"error"))
         if not isinstance(r["conclusion"], str):
-            logs.append("Invalid conclusion type for rule {}: {}".format(r.get("id", "Unknown"), r["conclusion"]))
+            logs.append(("Invalid conclusion type for rule {}: {}".format(r.get("id", "Unknown"), r["conclusion"]),"error"))
         if not verify_rule_id(r.get("id")):
-            logs.append("Invalid rule ID for rule {}: {}".format(r.get("id", "Unknown"), r["id"]))
+            logs.append(("Invalid rule ID for rule {}: {}".format(r.get("id", "Unknown"), r["id"]),"error"))
         if not verify_type(r.get("type")):
-            logs.append("Invalid type for rule {}: {}".format(r.get("id", "Unknown"), r["type"]))
+            logs.append(("Invalid type for rule {}: {}".format(r.get("id", "Unknown"), r["type"]),"error"))
     if logs:
         return False, logs
-    return True, ["Correct parsing of the rules"] # all checks passed
+    return True, [("Correct parsing of the rules","valid")] # all checks passed
 
 def remove_identity(json_string):
     """Remove identity rules from the JSON string."""

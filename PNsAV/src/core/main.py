@@ -1,7 +1,7 @@
 import ast
 import json
 import sys
-from pipeline import Pipeline
+from pipeline import Pipeline, Log
 import os
 
 def main():
@@ -140,6 +140,9 @@ def main():
 
     def print_attack(attack):
         print(attack.type, attack.target, attack.attacker, sep="|", end="-")
+    
+    def print_log(log):
+        print(log.text, log.type, sep="|", end="-")
 
     for i in engine.atoms:
         print_atom(i)
@@ -152,6 +155,9 @@ def main():
     print("@", end="")
     for i in engine.attacks:
         print_attack(i)
+    print("@", end="")
+    for i in logs:
+        print_log(i)
 
 if __name__ == "__main__":
     main()

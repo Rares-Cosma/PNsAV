@@ -26,17 +26,17 @@ def validate_atoms(json_string, source):
     
     for atom in inp["atoms"]: # id, text, kb_type, source_quote
         if set(["id","text","kb_type","source_quote"]) != set(atom.keys()):
-            logs.append("Required keys missing for atom: {}".format(atom.get("id", "Unknown")))
+            logs.append(("Required keys missing for atom: {}".format(atom.get("id", "Unknown")), "error"))
         if not verify_atom_id(atom["id"]):
-            logs.append("Invalid atom ID: {}".format(atom["id"]))
+            logs.append(("Invalid atom ID: {}".format(atom["id"]), "error"))
         if not verify_kb_type(atom["kb_type"]):
-            logs.append("Invalid knowledge base type for atom {}: {}".format(atom["id"], atom["kb_type"]))
+            logs.append(("Invalid knowledge base type for atom {}: {}".format(atom["id"], atom["kb_type"]), "error"))
         if not verify_source_quotes(atom["source_quote"], source):
-            logs.append("Source quote does not match the text for atom {}: {}".format(atom["id"], atom["source_quote"]))
+            logs.append(("Source quote does not match the text for atom {}: {}".format(atom["id"], atom["source_quote"]), "warning"))
     
     if logs:
         return False, logs
-    return True, ["Correct parsing of the atoms"] # all checks passed
+    return True, [("Correct parsing of the atoms", "valid")] # all checks passed
 
 def remove_duplicate_atoms(json_string):
     """Remove duplicate atoms from the JSON string."""

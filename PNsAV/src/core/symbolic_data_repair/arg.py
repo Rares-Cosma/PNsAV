@@ -75,21 +75,21 @@ def validate_arguments(json_string, rules):
     try:
         inp = json.loads(json_string)
     except json.JSONDecodeError:
-        return False, ["Invalid JSON format"] # LLM returned invalid JSON
+        return False, [("Invalid JSON format", "error")] # LLM returned invalid JSON
     
     logs = []
         
     for arg in inp["arguments"]:
         if set(["id","conclusion","top_rule","sub_arguments","type"]) != set(arg.keys()):
-            logs.append("Required keys missing for argument: {}".format(arg.get("id", "Unknown")))
+            logs.append(("Required keys missing for argument: {}".format(arg.get("id", "Unknown")), "error"))
         if not verify_arg_id(arg["id"]):
-            logs.append("Invalid argument ID: {}".format(arg["id"]))
+            logs.append(("Invalid argument ID: {}".format(arg["id"]), "error"))
         if not verify_type(arg["type"]):
-            logs.append("Invalid argument type for argument {}: {}".format(arg["id"], arg["type"]))
+            logs.append(("Invalid argument type for argument {}: {}".format(arg["id"], arg["type"]), "error"))
         if not verify_conclusion_match(arg, rules):
-            logs.append("Conclusion does not match the top rule for argument {}: {}".format(arg["id"], arg["conclusion"]))
+            logs.append(("Conclusion does not match the top rule for argument {}: {}".format(arg["id"], arg["conclusion"]), "warning"))
         if not verify_sub_arguments(arg, rules, inp["arguments"]):
-            logs.append("Sub-arguments are invalid for argument {}: {}".format(arg["id"], arg["sub_arguments"]))
+            logs.append(("Sub-arguments are invalid for argument {}: {}".format(arg["id"], arg["sub_arguments"]), "warning"))
     if logs:
         return False, logs
-    return True, ["Correct parsing of the arguments"] # all checks passed
+    return True, [("Correct parsing of the arguments", "valid")] # all checks passed

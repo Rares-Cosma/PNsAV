@@ -9,8 +9,8 @@ from datetime import datetime
 
 #TODO:
 # 2) text analizat
-# 3) info in stanga jos
 # 4) larisa: ui/ux paper, about, contact
+# 67) logs
 # 5) finish paper
 # 6) resources
 # 7) comentarii cod
@@ -82,23 +82,20 @@ with col_stanga:
 
         if st.session_state["analysed_text"]:
             with st.spinner("Running background script..."):
-                process = subprocess.run(
-                    ["python", str(worker_path), st.session_state["analysed_text"]],
-                    capture_output=True,
-                    text=True,
-                    check=True 
-                )
+                try:
+                    process = subprocess.run(
+                        ["python", str(worker_path), st.session_state["analysed_text"]],
+                        capture_output=True,
+                        text=True,
+                        check=True 
+                    )
 
-                data = process.stdout.strip()
-
-    """st.html("
-        <div class="custom-card" style="margin-top: 20px;">
-            <div class="card-header" style="border:none; margin:0; padding:0;">ℹ️ INFORMAȚII</div>
-            <div style="font-size:13px; color:#acb2be; margin-top:10px; line-height:1.5;">
-                Încarcă un fișier sau introdu text pentru a începe analiza în limbaj natural.
-            </div>
-        </div>
-    ")"""
+                    data = process.stdout.strip()
+                except subprocess.CalledProcessError as e:
+                    st.error(f"❌ Script `main.py` returned {e.returncode}")
+                    
+                    st.subheader("Console Output (Stderr):")
+                    st.code(e.stderr if e.stderr else "No error text was written to stderr. The script might have been killed.", language="bash")
 
 with col_dreapta:
     st.subheader("Graph")
@@ -191,41 +188,30 @@ with col_dreapta:
     with col_loguri:
             st.subheader("Logs")
             ora_curenta=datetime.now().strftime("%H:%M:%S:")
-            logs_html = f"""
-            <div class="logs-container">
-            <div class="log-row">
-                <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ ora_curenta }:</div>
-                <div class="log-text">Fișier încărcat: <span style="color:#3b82f6;">document.txt</span></div>
-            </div>
-            <div class="log-row">
-                <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora_curenta}</div>
-                <div class="log-text">Preprocesare text în curs...</div>
-            </div>
-            <div class="log-row">
-                <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora_curenta}</div>
-                <div class="log-text">Extracție entități realizată (28 entități găsite)</div>
-            </div>
-            <div class="log-row">
-                <div class="log-dot dot-blue"></div>
-                <div class="log-time">{ora_curenta}</div>
-                <div class="log-text">Analiză relații în curs...</div>
-            </div>
-            <div class="log-row">
-                <div class="log-dot dot-green"></div>
-                <div class="log-time">{ora_curenta}</div>
-                <div class="log-text" style="color:#22c55e;">Graf generat cu succes (9 noduri, 24 muchii)</div>
-            </div>
-            <div class="log-row">
-                <div class="log-dot dot-green"></div>
-                <div class="log-time">{ora_curenta}</div>
-                <div class="log-text" style="color:#22c55e;">Analiză încheiată cu succes</div>
-            </div>
-        </div>
-        """
-            st.html(logs_html)
+            if data:
+                data_packets = data.split("@")
+                print(data_packets)
+                logs = data_packets[4].split("-")
+                fhtml=""
+                for log in logs:
+                    info = log.split("|")
+                    if len(info)>1:
+                        text = info[0]
+                        log_type = info[1]
+                        color = {"valid":"dot-green", "warning":"dot-yellow", "error":"dot-red", "info":"dot-blue"}
+                        content = f"""<div class="log-row">
+                                        <div class="log-dot {color[log_type]}"></div>
+                                        <div class="log-time">{ ora_curenta }:</div>
+                                        <div class="log-text">{text}</div>
+                                    </div>"""
+                        fhtml+=content
+
+                logs_html = f"""
+                <div class="logs-container">
+                    {fhtml}
+                </div>
+                """
+                st.html(logs_html)
 
 st.html("""
     <div style="text-align: center; color: #53647a; font-size: 12px; margin-top: 40px; padding: 15px 0; border-top: 1px solid #1f293d;">

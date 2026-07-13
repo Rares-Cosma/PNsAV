@@ -5,6 +5,12 @@ from schema import atom_schema, argument_schema, rule_schema
 import symbolic_data_repair.atom as atom
 import symbolic_data_repair.arg as arg
 import symbolic_data_repair.rule as rule
+import time
+
+class Log:
+    def __init__(self, text, type):
+        self.text = text
+        self.type = type
 
 class Pipeline:
     def __init__(self, prompt_path):
@@ -15,6 +21,8 @@ class Pipeline:
         self.arg_schema = argument_schema
     
     def execute_orchestration(self, agents, data, schemas):
+        start = time.perf_counter()
+
         atoms = self.model.run_agent(
             agent_id=agents[0],
             data=[data],
@@ -22,8 +30,10 @@ class Pipeline:
             system_prompt=self.model.ATOM_PROMPT
         )
 
-        atom_status, atom_log = atom.validate_atoms(atoms, data)
-        self.logs.append(atom_log)
+        atom_status, atom_logs = atom.validate_atoms(atoms, data)
+        for i in atom_logs:
+            log = Log(i[0], i[1])
+            self.logs.append(log)
         atoms = atom.remove_duplicate_atoms(atoms)
 
         rules = self.model.run_agent(
@@ -33,8 +43,10 @@ class Pipeline:
             system_prompt=self.model.RULE_PROMPT
         )
 
-        rules_status, rules_log = rule.validate_rules(rules)
-        self.logs.append(rules_log)
+        rules_status, rules_logs = rule.validate_rules(rules)
+        for i in rules_logs:
+            log = Log(i[0], i[1])
+            self.logs.append(log)
         rules = rule.remove_identity(rules)
         rules = rule.remove_duplicate_rules(str(rules))
 
@@ -45,8 +57,12 @@ class Pipeline:
             system_prompt=self.model.ARG_PROMPT
         )
 
-        args_status, args_log = arg.validate_arguments(args, rules)
-        self.logs.append(args_log)
+        args_status, args_logs = arg.validate_arguments(args, rules)
+        for i in args_logs:
+            log = Log(i[0], i[1])
+            self.logs.append(log)
+
+        self.logs.append(Log(f"Text extraction and validation took: {time.perf_counter()-start:.4f} seconds", "info"))
 
         return atoms, rules, args, self.logs
 

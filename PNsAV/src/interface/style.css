@@ -125,6 +125,14 @@ header {
     background-color: #22c55e;
 }
 
+.dot-red {
+    background-color: #c52222;
+}
+
+.dot-yellow {
+    background-color: #ffff1f;
+}
+
 .log-time {
     color: #53647a;
     margin-right: 15px;

@@ -1,17 +1,371 @@
 import streamlit as st
-import json
-import time
 from streamlit_agraph import agraph, Node, Edge, Config
+import json
+from datetime import datetime
 
-st.set_page_config(layout="wide", page_title="Probabilistic Neurosymbolic Argument Validation Model")
+st.set_page_config(
+    page_title="PNsAV Analyzer",
+    page_icon="🛡️",
+    layout="wide",
+)
 
-st.title("PNsAV")
-st.markdown("Probabilistic Neurosymbolic Argument Validation Model")
+st.html("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    .block-container {
+        padding-top: 0.8rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;        
+        padding-bottom: 1rem;
+        max-width: 100%;
+        background-color: #080b10;
+    }
 
-MOCK_ATOMS = {"atoms":[{"id":"a1","text":"An entity has a siren","kb_type":"premise","source_quote":"a vehicle has a siren"},{"id":"a2","text":"An entity is an emergency vehicle","kb_type":"premise","source_quote":"it is an emergency vehicle"},{"id":"a3","text":"An entity can run red lights","kb_type":"premise","source_quote":"it can run red lights"},{"id":"a4","text":"This entity is Engine 42","kb_type":"premise","source_quote":"Engine 42"},{"id":"a5","text":"This entity has a siren","kb_type":"premise","source_quote":"has a siren"}]}
-MOCK_RULES = {"scratchpad":{"extracted_connectors":["If","If"],"disjunction_split_plan":"No OR disjunctions found; no split needed.","inversion_check":"No 'requires' inversion found."},"rules":[{"id":"r1","conclusion":"a2","premises":["a1"],"type":"defeasible"}, {"id":"r2","conclusion":"a3","premises":["a2"],"type":"defeasible"}, {"id":"r3","conclusion":"a1","premises":["a5"],"type":"strict"}]}
-MOCK_ARGUMENTS = {"scratchpad":{"text_connectors_found":["If","If"],"rule_firing_verification":"P1 creates atomic arguments for all provided atoms..."},"arguments": [{"id":"A1","conclusion":"a1","top_rule":None,"sub_arguments":[],"type":"atomic"}, {"id":"A2","conclusion":"a2","top_rule":None,"sub_arguments":[],"type":"atomic"}, {"id":"A3","conclusion":"a3","top_rule":None,"sub_arguments":[],"type":"atomic"}, {"id":"A4","conclusion":"a4","top_rule":None,"sub_arguments":[],"type":"atomic"}, {"id":"A5","conclusion":"a5","top_rule":None,"sub_arguments":[],"type":"atomic"}, {"id":"A6","conclusion":"a1","top_rule":"r3","sub_arguments":["A5"],"type":"strict"}, {"id":"A7","conclusion":"a2","top_rule":"r1","sub_arguments":["A6"],"type":"defeasible"}, {"id":"A8","conclusion":"a3","top_rule":"r2","sub_arguments":["A7"],"type":"defeasible"}]}
+    .stApp {
+        background-color: #080b10;
+        color: #c9d1d9;
+    }
 
-st.title("🧠 Sistem de Extracție și Vizualizare Argumente")
-st.caption("Pagina 2: Procesare, Analiză grafuri și loguri")
+    .nav-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #1f293d;
+        width: 100%;
+    }
+    .nav-logo {
+        font-weight: bold;
+        font-size: 22px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
+    .custom-card {
+        background-color: #121620;
+        border: 1px solid #1f293d;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    
+    .card-header {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #1f293d;
+        padding-bottom: 10px;
+    }
+
+    .text-container {
+        background-color: #121620;
+        border: 1px solid #1f293d;
+        border-radius: 6px;
+        padding: 15px;
+        height: 220px;
+        overflow-y: auto;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #acb2be;
+    }
+    .highlight-orange { color: #f97316; font-weight: bold; }
+    .highlight-blue { color: #3b82f6; font-weight: bold; }
+    .highlight-green { color: #22c55e; font-weight: bold; }
+
+    .logs-container {
+        background-color: #121620;
+        border: 1px solid #1f293d;
+        border-radius: 6px;
+        padding: 15px;
+        height: 220px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 13px;
+    }
+    .log-row {
+        display: flex;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+    .log-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+    .dot-blue { background-color: #3b82f6; }
+    .dot-green { background-color: #22c55e; }
+    .log-time {
+        color: #53647a;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+    .log-text {
+        color: #c9d1d9;
+    }
+
+    div.stButton > button:first-child {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #2563eb;
+        border: none;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .info-box {
+        background-color: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 6px;
+        padding: 12px 15px;
+        font-size: 13px;
+        color: #8b9eb7;
+        margin-top: 15px;
+    }
+
+    .graph-legend {
+        background-color: rgba(18, 22, 32, 0.8);
+        border: 1px solid #1f293d;
+        border-radius: 6px;
+        padding: 12px;
+        font-size: 12px;
+        color: #acb2be;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        z-index: 100;
+        pointer-events: none;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+    .legend-color {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+    </style>
+""")
+
+#datele date de rares in pdf
+DEFAULT_JSON = {
+    "atoms": [
+        {"id":"a1","text":"Inteligență Artificială","kb_type":"concept","source_quote": "IA principală"},
+        {"id":"a2","text":"Machine Learning","kb_type":"tehnologie","source_quote": "ML secundar"},
+        {"id":"a3","text":"Deep Learning","kb_type":"tehnologie","source_quote": "DL avansat"},
+        {"id":"a4","text":"Neural Networks","kb_type":"proces","source_quote": "Rețele"},
+        {"id":"a5","text":"Procesare Limbaj Natural","kb_type":"proces","source_quote": "NLP text"},
+        {"id":"a6","text":"Analiză","kb_type":"proces","source_quote": "Analiză logică"},
+        {"id":"a7","text":"Date","kb_type":"tehnologie","source_quote": "Date brute"},
+        {"id":"a8","text":"Algoritmi","kb_type":"tehnologie","source_quote": "Algoritmi matematici"}
+    ]
+}
+
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "Workspace"
+
+nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
+with nav_col1:
+    st.html("""
+    <div class="nav-bar">
+        <div class="nav-logo">
+            🛡️ PNsAV Analyzer
+        </div>
+    </div>
+""")
+with nav_col2:
+    if st.button("Resources", use_container_width=True):
+        st.session_state.current_page = "About"
+with nav_col3:
+    if st.button("About", use_container_width=True):
+        st.session_state.current_page = "Tutorial"
+with nav_col4:
+    if st.button("Contact", use_container_width=True):
+        st.session_state.current_page = "Resources"
+
+st.html("<div style='margin-bottom: 0px;'></div>")
+
+if st.session_state.current_page == "About":
+    st.title("Despre PNsAV")
+    st.write("PNsAV este un instrument avansat de procesare a limbajului natural pentru maparea argumentării formale.")
+    if st.button("Înapoi la Workspace"):
+        st.session_state.current_page = "Workspace"
+        st.rerun()
+    st.stop()
+
+elif st.session_state.current_page == "Tutorial":
+    st.title("Ghid de Utilizare")
+    st.markdown("1. Încarcă un text sau un fișier.\n2. Apasă 'Analizează' pentru a rula backend-ul.")
+    if st.button("Înapoi la Workspace"):
+        st.session_state.current_page = "Workspace"
+        st.rerun()
+    st.stop()
+
+elif st.session_state.current_page == "Resources":
+    st.title("Resurse suplimentare")
+    st.markdown("Documente suplimentare referitoare la framework-ul ASPIC+.")
+    if st.button("Înapoi la Workspace"):
+        st.session_state.current_page = "Workspace"
+        st.rerun()
+    st.stop()
+
+
+col_stanga, col_dreapta = st.columns([1.5, 3.5], gap="medium")
+
+with col_stanga:
+    st.subheader("ÎNCĂRCARE TEXT")
+    uploaded_file = st.file_uploader("Trage fișierul aici", type=["txt", "pdf", "docx"], label_visibility="collapsed")
+    st.html("<div style='font-size:13px; font-weight:bold; color:#8b9eb7; margin-bottom:8px;'>SAU INTRODU TEXT</div>")
+    
+    # Input Text
+    user_text = st.text_area("Input Text Principal", height=200, placeholder="Introdu textul aici...", label_visibility="collapsed")
+    st.html(f"<div style='text-align:right; font-size:11px; color:#53647a; margin-top:-5px; margin-bottom:15px;'>{len(user_text)} / 10000</div>")
+    
+    if st.button("Analizează", type="primary", use_container_width=True):
+        if uploaded_file is not None:
+            st.session_state["analysed_text"] = uploaded_file.read().decode("utf-8")
+        else:
+            st.session_state["analysed_text"] = user_text
+        st.session_state["analysed_triggered"] = True
+
+    st.html("""
+        <div class="custom-card" style="margin-top: 20px;">
+            <div class="card-header" style="border:none; margin:0; padding:0;">ℹ️ INFORMAȚII</div>
+            <div style="font-size:13px; color:#acb2be; margin-top:10px; line-height:1.5;">
+                Încarcă un fișier sau introdu text pentru a începe analiza în limbaj natural.
+            </div>
+        </div>
+    """)
+
+with col_dreapta:
+    st.subheader("GRAF")
+    g_col1, g_col2 = st.columns([3, 1])
+
+    nodes = [
+        Node(id="IA", label="Inteligență Artificială", size=24, color="#f97316", title="Concept Principal"),
+        Node(id="ML", label="Machine Learning", size=18, color="#3b82f6", title="Tehnologie"),
+        Node(id="DL", label="Deep Learning", size=18, color="#3b82f6", title="Tehnologie"),
+        Node(id="NN", label="Neural Networks", size=18, color="#22c55e", title="Proces"),
+        Node(id="NLP", label="Procesare Limbaj Natural", size=18, color="#22c55e", title="Proces"),
+        Node(id="AN", label="Analiză", size=18, color="#22c55e", title="Proces"),
+        Node(id="DA", label="Date", size=18, color="#3b82f6", title="Tehnologie"),
+        Node(id="AL", label="Algoritmi", size=18, color="#3b82f6", title="Tehnologie")
+    ]
+    
+    edges = [
+        Edge(source="IA", target="ML", color="#3a4b6e"),
+        Edge(source="IA", target="NLP", color="#3a4b6e"),
+        Edge(source="ML", target="DL", color="#3a4b6e"),
+        Edge(source="DL", target="NN", color="#3a4b6e"),
+        Edge(source="NN", target="AL", color="#3a4b6e"),
+        Edge(source="AL", target="DA", color="#3a4b6e"),
+        Edge(source="DA", target="AN", color="#3a4b6e"),
+        Edge(source="AN", target="NLP", color="#3a4b6e"),
+        Edge(source="NLP", target="IA", color="#3a4b6e"),
+        Edge(source="NN", target="IA", color="#3a4b6e")
+    ]
+
+    config = Config(
+        width="100%", 
+        height=320,
+        directed=True, 
+        physics=True, 
+        hierarchical=False,
+        collapsible=False
+    )
+ 
+    selected_node = agraph(nodes=nodes, edges=edges, config=config)
+# modificam sa fie legenda gen
+    st.html("""
+        <div style="display: flex; justify-content: space-between; background-color: #121620; padding: 12px; border-radius: 6px; border: 1px solid #1f293d; margin-top: -10px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 20px;">
+                <div class="legend-item"><div class="legend-color" style="background-color: #f97316;"></div><span>Concept principal</span></div>
+                <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><span>Tehnologii</span></div>
+                <div class="legend-item"><div class="legend-color" style="background-color: #22c55e;"></div><span>Procese</span></div>
+            </div>
+            <div style="font-size: 11px; color: #53647a;">
+                <b>Noduri:</b> 8 | <b>Muchii:</b> 10
+            </div>
+        </div>
+    """)
+
+    col_text, col_loguri = st.columns([1, 1], gap="medium")
+    
+    # Zona TEXT ANALIZAT (HTML formatat cu culorile corecte)
+    with col_text:
+        st.subheader("TEXT ANALIZAT")
+        #cand integram backend ul inlocuim acest string cu rezultatul
+        text_html = """
+        <div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;">
+        <span class="highlight-orange">Inteligența Artificială (IA)</span> reprezintă un domeniu vast...
+        <br><br>
+        <span class="highlight-blue">Machine Learning</span> permite sistemelor să învețe...
+    </div>
+    """
+        st.html(text_html)
+
+    with col_loguri:
+            st.subheader("LOGURI")
+            ora_curenta=datetime.now().strftime("%H:%M:%S:")
+            logs_html = """
+            <div class="logs-container">
+            <div class="log-row">
+                <div class="log-dot dot-blue"></div>
+                <div class="log-time">{ ora_acum }:</div>
+                <div class="log-text">Fișier încărcat: <span style="color:#3b82f6;">document.txt</span></div>
+            </div>
+            <div class="log-row">
+                <div class="log-dot dot-blue"></div>
+                <div class="log-time">{ora acum}</div>
+                <div class="log-text">Preprocesare text în curs...</div>
+            </div>
+            <div class="log-row">
+                <div class="log-dot dot-blue"></div>
+                <div class="log-time">{ora acum}</div>
+                <div class="log-text">Extracție entități realizată (28 entități găsite)</div>
+            </div>
+            <div class="log-row">
+                <div class="log-dot dot-blue"></div>
+                <div class="log-time">{ora acum}</div>
+                <div class="log-text">Analiză relații în curs...</div>
+            </div>
+            <div class="log-row">
+                <div class="log-dot dot-green"></div>
+                <div class="log-time">{ora acum}</div>
+                <div class="log-text" style="color:#22c55e;">Graf generat cu succes (9 noduri, 24 muchii)</div>
+            </div>
+            <div class="log-row">
+                <div class="log-dot dot-green"></div>
+                <div class="log-time">{ora acum}</div>
+                <div class="log-text" style="color:#22c55e;">Analiză încheiată cu succes</div>
+            </div>
+        </div>
+        """
+            st.html(logs_html)
+
+st.html("""
+    <div style="text-align: center; color: #53647a; font-size: 12px; margin-top: 40px; padding: 15px 0; border-top: 1px solid #1f293d;">
+        PNSAV Analyzer v1.0.0 &nbsp;&bull;&nbsp; Creat cu ❤️ pentru analiza în limbaj natural
+    </div>
+""")

@@ -9,9 +9,11 @@ st.set_page_config(
     layout="wide",
 )
 
-st.html("""
-    
-""")
+styles = ""
+with open("style.css", "r") as style_file:
+    styles = style_file.read()
+
+st.html(f"<style>{styles}</style>")
 
 #datele date de rares in pdf
 DEFAULT_JSON = {

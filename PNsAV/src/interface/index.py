@@ -3,6 +3,8 @@ from streamlit_agraph import agraph, Node, Edge, Config
 import json
 from datetime import datetime
 
+st.set_page_config(initial_sidebar_state="collapsed")
+
 st.set_page_config(
     page_title="PNsAV Analyzer",
     page_icon="🛡️",
@@ -43,40 +45,15 @@ with nav_col1:
 """)
 with nav_col2:
     if st.button("Resources", use_container_width=True):
-        st.session_state.current_page = "About"
+        st.switch_page("pages/Resources.py")
 with nav_col3:
     if st.button("About", use_container_width=True):
-        st.session_state.current_page = "Tutorial"
+        st.switch_page("pages/About.py")
 with nav_col4:
     if st.button("Contact", use_container_width=True):
-        st.session_state.current_page = "Resources"
+        st.switch_page("pages/Contact.py")
 
 st.html("<div style='margin-bottom: 0px;'></div>")
-
-if st.session_state.current_page == "About":
-    st.title("Despre PNsAV")
-    st.write("PNsAV este un instrument avansat de procesare a limbajului natural pentru maparea argumentării formale.")
-    if st.button("Înapoi la Workspace"):
-        st.session_state.current_page = "Workspace"
-        st.rerun()
-    st.stop()
-
-elif st.session_state.current_page == "Tutorial":
-    st.title("Ghid de Utilizare")
-    st.markdown("1. Încarcă un text sau un fișier.\n2. Apasă 'Analizează' pentru a rula backend-ul.")
-    if st.button("Înapoi la Workspace"):
-        st.session_state.current_page = "Workspace"
-        st.rerun()
-    st.stop()
-
-elif st.session_state.current_page == "Resources":
-    st.title("Resurse suplimentare")
-    st.markdown("Documente suplimentare referitoare la framework-ul ASPIC+.")
-    if st.button("Înapoi la Workspace"):
-        st.session_state.current_page = "Workspace"
-        st.rerun()
-    st.stop()
-
 
 col_stanga, col_dreapta = st.columns([1.5, 3.5], gap="medium")
 

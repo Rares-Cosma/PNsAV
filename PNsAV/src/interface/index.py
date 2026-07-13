@@ -188,11 +188,11 @@ with col_dreapta:
     with col_loguri:
             st.subheader("Logs")
             ora_curenta=datetime.now().strftime("%H:%M:%S:")
+            fhtml=""
             if data:
                 data_packets = data.split("@")
                 print(data_packets)
                 logs = data_packets[4].split("-")
-                fhtml=""
                 for log in logs:
                     info = log.split("|")
                     if len(info)>1:
@@ -206,12 +206,12 @@ with col_dreapta:
                                     </div>"""
                         fhtml+=content
 
-                logs_html = f"""
+            logs_html = f"""
                 <div class="logs-container">
                     {fhtml}
                 </div>
                 """
-                st.html(logs_html)
+            st.html(logs_html)
 
 st.html("""
     <div style="text-align: center; color: #53647a; font-size: 12px; margin-top: 40px; padding: 15px 0; border-top: 1px solid #1f293d;">

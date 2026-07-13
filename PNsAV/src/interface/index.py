@@ -4,7 +4,17 @@ from st_click_detector import click_detector
 from pathlib import Path
 import subprocess
 import json
+import base64
 from datetime import datetime
+
+#TODO:
+# 2) text analizat
+# 3) info in stanga jos
+# 4) larisa: ui/ux paper, about, contact
+# 5) finish paper
+# 6) resources
+# 7) comentarii cod
+# 8) documentatia
 
 st.set_page_config(initial_sidebar_state="collapsed")
 
@@ -25,16 +35,21 @@ if "current_page" not in st.session_state:
     st.session_state.current_page = "Workspace"
 
 nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
+
+with open("pnsav_logo.PNG", "rb") as image_file:
+    encoded_logo = base64.b64encode(image_file.read()).decode()
+
 with nav_col1:
-    st.html("""
-    <div class="nav-bar" id="click">
+    st.html(f"""
+    <div class="nav-bar">
         <div class="nav-logo">
-            ⚙️ PNsAV Analyzer
+            <a href="http://localhost:8501" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
         </div>
     </div>
 """)
+
 with nav_col2:
-    if st.button("Resources", use_container_width=True):
+    if st.button("Resources", use_container_width=True,):
         st.switch_page("pages/Resources.py")
 with nav_col3:
     if st.button("About", use_container_width=True):
@@ -48,15 +63,15 @@ st.html("<div style='margin-bottom: 0px;'></div>")
 col_stanga, col_dreapta = st.columns([1.5, 3.5], gap="medium")
 
 with col_stanga:
-    st.subheader("ÎNCĂRCARE TEXT")
-    uploaded_file = st.file_uploader("Trage fișierul aici", type=["txt", "pdf", "docx"], label_visibility="collapsed")
-    st.html("<div style='font-size:13px; font-weight:bold; color:#8b9eb7; margin-bottom:8px;'>SAU INTRODU TEXT</div>")
+    st.subheader("Text Input")
+    uploaded_file = st.file_uploader("Drag & drop your file here", type=["txt"], label_visibility="collapsed")
+    st.html("<div style='font-size:13px; font-weight:bold; color:#8b9eb7; margin-bottom:8px;'>Paste your text:</div>")
     
     # Input Text
-    user_text = st.text_area("Input Text Principal", height=200, placeholder="Introdu textul aici...", label_visibility="collapsed")
-    st.html(f"<div style='text-align:right; font-size:11px; color:#53647a; margin-top:-5px; margin-bottom:15px;'>{len(user_text)} / 10000</div>")
+    user_text = st.text_area("Text Input", height=200, placeholder="Paste your text...", label_visibility="collapsed")
+    #st.html(f"<div style='text-align:right; font-size:11px; color:#53647a; margin-top:-5px; margin-bottom:15px;'>{len(user_text)} / 10000</div>")
     
-    if st.button("Analizează", type="primary", use_container_width=True):
+    if st.button("Analyze", type="primary", use_container_width=True):
         if uploaded_file is not None:
             st.session_state["analysed_text"] = uploaded_file.read().decode("utf-8")
         else:
@@ -76,20 +91,21 @@ with col_stanga:
 
                 data = process.stdout.strip()
 
-    st.html("""
+    """st.html("
         <div class="custom-card" style="margin-top: 20px;">
             <div class="card-header" style="border:none; margin:0; padding:0;">ℹ️ INFORMAȚII</div>
             <div style="font-size:13px; color:#acb2be; margin-top:10px; line-height:1.5;">
                 Încarcă un fișier sau introdu text pentru a începe analiza în limbaj natural.
             </div>
         </div>
-    """)
+    ")"""
 
 with col_dreapta:
-    st.subheader("GRAF")
+    st.subheader("Graph")
     g_col1, g_col2 = st.columns([3, 1])
 
     nodes, edges = [], []
+    arguments, attacks = [], []
 
     if data:
         data_packets = data.split("@")
@@ -115,7 +131,7 @@ with col_dreapta:
                 color = "#2865FF" if info[1] == "atomic" else "#FF5733"
                 size = 20 if info[1] == "atomic" else 25
 
-                label = f"Argument {info[0]}\nType {info[1]}\nText {id2text_atom[info[5]]}"
+                label = f"Argument {info[0]}\nType: {info[1]}\nConclusion: {id2text_atom[info[5]]}"
             
                 nodes.append(
                     Node(
@@ -151,25 +167,18 @@ with col_dreapta:
  
     selected_node = agraph(nodes=nodes, edges=edges, config=config)
 # modificam sa fie legenda gen
-    st.html("""
+    st.html(f'''
         <div style="display: flex; justify-content: space-between; background-color: #121620; padding: 12px; border-radius: 6px; border: 1px solid #1f293d; margin-top: -10px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 20px;">
-                <div class="legend-item"><div class="legend-color" style="background-color: #f97316;"></div><span>Concept principal</span></div>
-                <div class="legend-item"><div class="legend-color" style="background-color: #3b82f6;"></div><span>Tehnologii</span></div>
-                <div class="legend-item"><div class="legend-color" style="background-color: #22c55e;"></div><span>Procese</span></div>
-            </div>
             <div style="font-size: 11px; color: #53647a;">
-                <b>Noduri:</b> 8 | <b>Muchii:</b> 10
+                <b>Nodes:</b> {len(arguments)-1 if len(arguments)>1 else 0} | <b>Edges:</b> {len(attacks)-1 if len(attacks)>1 else 0}
             </div>
         </div>
-    """)
+    ''')
 
     col_text, col_loguri = st.columns([1, 1], gap="medium")
     
-    # Zona TEXT ANALIZAT (HTML formatat cu culorile corecte)
     with col_text:
-        st.subheader("TEXT ANALIZAT")
-        #cand integram backend ul inlocuim acest string cu rezultatul
+        st.subheader("Analyzed text")
         text_html = """
         <div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;">
         <span class="highlight-orange">Inteligența Artificială (IA)</span> reprezintă un domeniu vast...
@@ -180,7 +189,7 @@ with col_dreapta:
         st.html(text_html)
 
     with col_loguri:
-            st.subheader("LOGURI")
+            st.subheader("Logs")
             ora_curenta=datetime.now().strftime("%H:%M:%S:")
             logs_html = f"""
             <div class="logs-container">
@@ -220,6 +229,6 @@ with col_dreapta:
 
 st.html("""
     <div style="text-align: center; color: #53647a; font-size: 12px; margin-top: 40px; padding: 15px 0; border-top: 1px solid #1f293d;">
-        PNSAV Analyzer v1.0.0 &nbsp;&bull;&nbsp; Creat cu ❤️ pentru analiza în limbaj natural
+        PNSAV Argument Validator &nbsp;&bull;&nbsp; @PNsAV 2026. All rights reserved.
     </div>
 """)

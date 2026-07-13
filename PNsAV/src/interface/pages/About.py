@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 st.set_page_config(initial_sidebar_state="collapsed")
 
 st.set_page_config(
@@ -14,11 +15,15 @@ with open("style.css", "r") as style_file:
 st.html(f"<style>{styles}</style>")
 
 nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
+
+with open("pnsav_logo.PNG", "rb") as image_file:
+    encoded_logo = base64.b64encode(image_file.read()).decode()
+
 with nav_col1:
-    st.html("""
+    st.html(f"""
     <div class="nav-bar">
         <div class="nav-logo">
-            ❓ PNsAV About
+            <a href="http://localhost:8501" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
         </div>
     </div>
 """)

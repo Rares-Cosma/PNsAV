@@ -99,7 +99,7 @@ void Engine::compute_argument_strengths() {
     }
 }
 
-void Engine::propagate_strengths(double kappa, int iter, float epsilon){
+int Engine::propagate_strengths(double kappa, int iter, float epsilon){
     std::unordered_map<std::string, double> new_strength;
     if (iter>0) {
         for (int i = 0; i < iter; i++){
@@ -121,6 +121,7 @@ void Engine::propagate_strengths(double kappa, int iter, float epsilon){
                 arg.strength = new_strength[arg.id];
             }
         }
+        return iter;
     } else {
         int safe_cap = 10000;
         float max_move = epsilon;
@@ -146,5 +147,6 @@ void Engine::propagate_strengths(double kappa, int iter, float epsilon){
                 arg.strength = new_strength[arg.id];
             }
         }
+        return 10000-safe_cap;
     }
 }

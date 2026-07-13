@@ -10,7 +10,7 @@ from datetime import datetime
 #TODO:
 # 2) text analizat
 # 4) larisa: ui/ux paper, about, contact
-# 67) logs
+# 67) logs (partial)
 # 5) finish paper
 # 6) resources
 # 7) comentarii cod

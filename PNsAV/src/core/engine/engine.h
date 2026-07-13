@@ -23,6 +23,6 @@ class Engine {
 
         std::vector<Argument> compute_cycles();
         void compute_argument_strengths();
-        void propagate_strengths(double kappa, int iter, float epsilon);
+        int propagate_strengths(double kappa, int iter, float epsilon);
 };
 

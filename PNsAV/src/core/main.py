@@ -1,6 +1,7 @@
 import ast
 import json
 import sys
+import time
 from pipeline import Pipeline, Log
 import os
 
@@ -69,6 +70,8 @@ def main():
     #print("Rules:", rules)
     #print("Arguments:", args)
 
+    start = time.perf_counter()
+
     engine = module.Engine()
 
     for atom in atoms["atoms"]:
@@ -127,7 +130,10 @@ def main():
 
     cycles = engine.compute_cycles()
     engine.compute_argument_strengths()
-    engine.propagate_strengths(0.7,0,0.001)
+    rounds = engine.propagate_strengths(0.7,0,0.001)
+    
+    logs.append(Log(f"Rounds executed until strength converged: {rounds}.", "info"))
+    logs.append(Log(f"Engine took {time.perf_counter()-start:.4f} seconds to run.","info"))
 
     def print_atom(atom):
         print(atom.id, atom.kb_type, atom.text, atom.strength, sep="|", end="-")

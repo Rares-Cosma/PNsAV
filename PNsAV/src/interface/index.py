@@ -4,13 +4,13 @@ from st_click_detector import click_detector
 from pathlib import Path
 import subprocess
 import json
+import ast
 import base64
 from datetime import datetime
 
 #TODO:
-# 2) text analizat
+# 2) text analizat (partial)
 # 4) larisa: ui/ux paper, about, contact
-# 67) logs (partial)
 # 5) finish paper
 # 6) resources
 # 7) comentarii cod
@@ -33,8 +33,25 @@ st.html(f"<style>{styles}</style>")
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Workspace"
+st.session_state["analysed_triggered"] = False
 
 nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
+
+st.html("""
+<style>
+div[data-testid="stHorizontalBlock"],
+div[data-testid="column"],
+div[data-testid="stColumn"] {
+    align-items: center !important;
+}
+div[data-testid="stHorizontalBlock"] > div,
+div[data-testid="stColumn"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+</style>
+""")
 
 with open("pnsav_logo.PNG", "rb") as image_file:
     encoded_logo = base64.b64encode(image_file.read()).decode()
@@ -49,7 +66,7 @@ with nav_col1:
 """)
 
 with nav_col2:
-    if st.button("Resources", use_container_width=True,):
+    if st.button("Resources", use_container_width=True):
         st.switch_page("pages/Resources.py")
 with nav_col3:
     if st.button("About", use_container_width=True):
@@ -78,7 +95,7 @@ with col_stanga:
             st.session_state["analysed_text"] = user_text
         st.session_state["analysed_triggered"] = True
 
-        worker_path = Path(__file__).resolve().parent.parent / "core" / "main.py"
+        worker_path = Path(__file__).resolve().parent.parent / "core" / "extract.py"
 
         if st.session_state["analysed_text"]:
             with st.spinner("Running background script..."):
@@ -87,15 +104,97 @@ with col_stanga:
                         ["python", str(worker_path), st.session_state["analysed_text"]],
                         capture_output=True,
                         text=True,
-                        check=True 
+                        check=True
                     )
-
-                    data = process.stdout.strip()
+                    extracted = process.stdout.strip()
+                    st.session_state["show_config_dialog"] = True
+                    st.session_state["atoms"] = ast.literal_eval(extracted.split("@")[0])["atoms"]
+                    st.session_state["rules"] = ast.literal_eval(extracted.split("@")[1])["rules"]
+                    st.session_state["args"] = json.loads(extracted.split("@")[2])["arguments"]
+                    st.session_state["attacks"] = ast.literal_eval(extracted.split("@")[3])
+                    st.session_state["logs"] = ast.literal_eval(extracted.split("@")[4])
                 except subprocess.CalledProcessError as e:
-                    st.error(f"❌ Script `main.py` returned {e.returncode}")
-                    
+                    st.error(f"❌ Script `extract.py` returned {e.returncode}")
                     st.subheader("Console Output (Stderr):")
-                    st.code(e.stderr if e.stderr else "No error text was written to stderr. The script might have been killed.", language="bash")
+                    st.code(e.stderr if e.stderr else "No error text was written to stderr.", language="bash")
+
+
+# ---------- Config dialog: same UI, "Run Engine" now actually runs it ----------
+@st.dialog("Configure Analysis Parameters")
+def config_dialog():
+    st.subheader("Propagation Settings")
+    kappa = st.slider("Kappa (Lipschitz bound)", 0.0, 0.99, 0.6, step=0.01)
+    epsilon = st.number_input("Epsilon (convergence threshold)", value=0.0001, format="%.5f")
+    iter_mode = st.radio("Iteration mode", ["Run until convergence (epsilon)", "Fixed number of iterations"])
+    iters = 0
+    if iter_mode == "Fixed number of iterations":
+        iters = st.number_input("Number of iterations", min_value=1, value=50, step=1)
+
+    st.divider()
+    st.subheader("Atom Strengths")
+    atom_strengths = {}
+    for atom in st.session_state["atoms"]:
+        atom_strengths[atom["id"]] = st.slider(
+            f"{atom['id']}: {atom['text']}", 0.0, 1.0, 0.9, step=0.01, key=f"atom_{atom['id']}"
+        )
+
+    st.divider()
+    st.subheader("Rule Strengths")
+    rule_strengths = {}
+    for rule in st.session_state["rules"]:
+        if rule["type"] == "strict":
+            st.write(f"{rule['id']} ({' + '.join(rule['premises'])} → {rule['conclusion']}): strict, fixed at 1.0")
+            rule_strengths[rule["id"]] = 1.0
+        else:
+            rule_strengths[rule["id"]] = st.slider(
+                f"{rule['id']} ({' + '.join(rule['premises'])} → {rule['conclusion']})",
+                0.0, 1.0, 0.95, step=0.01, key=f"rule_{rule['id']}"
+            )
+
+    st.divider()
+    if st.button("Run Engine", type="primary", use_container_width=True):
+        # Bake user-assigned strengths back into the atoms/rules lists
+        atoms_with_strength = [
+            {**atom, "strength": atom_strengths[atom["id"]]}
+            for atom in st.session_state["atoms"]
+        ]
+        rules_with_strength = [
+            {**rule, "strength": rule_strengths[rule["id"]]}
+            for rule in st.session_state["rules"]
+        ]
+
+        engine_path = Path(__file__).resolve().parent.parent / "core" / "engine.py"
+        payload = json.dumps({
+            "atoms": atoms_with_strength,
+            "rules": rules_with_strength,
+            "args": st.session_state["args"],
+            "attacks": st.session_state["attacks"],
+            "logs": st.session_state["logs"],
+            "text": st.session_state["analysed_text"],
+            "kappa": kappa,
+            "epsilon": epsilon,
+            "iters": int(iters),
+        })
+
+        with st.spinner("Building arguments, resolving attacks, running engine..."):
+            try:
+                process = subprocess.run(
+                    ["python", str(engine_path)],
+                    input=payload,
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                st.session_state["analysis_data"] = process.stdout.strip()
+                st.session_state["show_config_dialog"] = False
+                st.rerun()
+            except subprocess.CalledProcessError as e:
+                st.error(f"❌ Script `engine.py` returned {e.returncode}")
+                st.code(e.stderr if e.stderr else "No error text was written to stderr.", language="bash")
+
+if st.session_state.get("show_config_dialog"):
+    config_dialog()
+
 
 with col_dreapta:
     st.subheader("Graph")
@@ -104,9 +203,10 @@ with col_dreapta:
     nodes, edges = [], []
     arguments, attacks = [], []
 
+    data = st.session_state.get("analysis_data", "")
+
     if data:
         data_packets = data.split("@")
-        print(data_packets)
 
         # data_packets[0] = atoms
         # data_packets[1] = rules
@@ -115,16 +215,17 @@ with col_dreapta:
         atoms = data_packets[0].split("-")
         id2text_atom = dict()
         for atom in atoms:
-            atom = atom.split("|")
-            if len(atom)>=3:
+            if atom:
+                atom = atom.split("|")
                 id2text_atom[atom[0]] = atom[2]
         arguments = data_packets[2].split("-")
         attacks = data_packets[3].split("-")
 
         for arg in arguments:
-            info = arg.split("|")
+            if arg:
+                info = arg.split("|")
+                print(info)
 
-            if len(info)>=5:
                 color = "#2865FF" if info[1] == "atomic" else "#FF5733"
                 size = 20 if info[1] == "atomic" else 25
 
@@ -142,7 +243,6 @@ with col_dreapta:
         
         for attack in attacks:
             info = attack.split("|")
-            print(info)
             if len(info)>1:
                 edges.append(
                     Edge(
@@ -176,22 +276,22 @@ with col_dreapta:
     
     with col_text:
         st.subheader("Analyzed text")
-        text_html = """
-        <div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;">
-        <span class="highlight-orange">Inteligența Artificială (IA)</span> reprezintă un domeniu vast...
-        <br><br>
-        <span class="highlight-blue">Machine Learning</span> permite sistemelor să învețe...
-    </div>
-    """
+        text_html = """<div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;"></div>"""
+        if st.session_state["analysed_triggered"]:
+            text_html = f"""
+            <div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;">
+                <p>{st.session_state["analysed_text"]}</p>
+            </div>
+            """
         st.html(text_html)
 
     with col_loguri:
             st.subheader("Logs")
             ora_curenta=datetime.now().strftime("%H:%M:%S:")
             fhtml=""
+            data = st.session_state.get("analysis_data", "")
             if data:
                 data_packets = data.split("@")
-                print(data_packets)
                 logs = data_packets[4].split("-")
                 for log in logs:
                     info = log.split("|")

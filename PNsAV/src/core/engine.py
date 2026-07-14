@@ -1,35 +1,21 @@
-import ast
 import json
 import sys
 import time
-from pipeline import Pipeline, Log
+from pipeline import Log
 import os
 
 def main():
-    if len(sys.argv) < 2:
-        print("Error: No input data provided.")
-        sys.exit(1)
-        
-    data = sys.argv[1]
-
-    mingw_bin_path = r"C:\\msys64\\mingw64\bin" 
+    mingw_bin_path = r"C:\\msys64\\mingw64\bin"
 
     if os.path.exists(mingw_bin_path):
         os.add_dll_directory(mingw_bin_path)
     else:
-        print(f"Warning: MinGW path not found at {mingw_bin_path}. Check your installation.")
-
+        print(f"Warning: MinGW path not found at {mingw_bin_path}. Check your installation.", file=sys.stderr)
 
     from engine import ArgEngine as module
 
     def topological_sort_arguments(arguments):
-        """
-        arguments: list of dicts, each with "id" and "sub_arguments" (list of ids)
-        Returns a new list, reordered so every argument appears after all of
-        its subarguments.
-        """
         id_to_arg = {arg["id"]: arg for arg in arguments}
-
         in_degree = {arg["id"]: 0 for arg in arguments}
         dependents = {arg["id"]: [] for arg in arguments}
 
@@ -53,46 +39,57 @@ def main():
                 if in_degree[dep] == 0:
                     ready.append(dep)
 
+        if len(sorted_ids) != len(arguments):
+            raise ValueError(
+                "Cycle detected in argument construction graph — "
+                "this should never happen; check the validation layer."
+            )
+
         return [id_to_arg[aid] for aid in sorted_ids]
 
-    pipeline = Pipeline("C:\\Users\\rares\\OneDrive\\Desktop\\infoed26\\PNsAV\\src\\agents_prompts")
-    atoms, rules, args, logs = pipeline.execute_orchestration(
-        agents=["gpt-5.4-mini", "gpt-5.4-mini", "gpt-5.4-mini"],
-        data=data,
-        schemas=[pipeline.atom_schema, pipeline.rule_schema, pipeline.arg_schema]
-    )
+    # ---------- Read everything from stdin instead of globals ----------
+    payload = json.loads(sys.stdin.read())
 
-    attacks = pipeline.generate_attacks(str(rules), str(args))
+    atoms_payload = payload["atoms"]
+    rules_payload = payload["rules"]
+    args_payload = payload["args"]
+    attacks_payload = payload["attacks"]
+    prior_logs = payload.get("logs", [])
+    kappa = payload["kappa"]
+    epsilon = payload["epsilon"]
+    iters = payload["iters"]
 
-    rules=ast.literal_eval(rules)
-    args=json.loads(args)
-    #print("Atoms:", atoms)
-    #print("Rules:", rules)
-    #print("Arguments:", args)
+    # Reconstruct Log objects from the extraction stage's logs, since
+    # that subprocess's in-memory state doesn't carry over here.
+    logs = [Log(l[0], l[1]) for l in prior_logs]
 
     start = time.perf_counter()
 
     engine = module.Engine()
 
-    for atom in atoms["atoms"]:
+    for atom in atoms_payload:
         obj_atom = module.Atom()
         obj_atom.id = atom["id"]
         obj_atom.text = atom["text"]
         obj_atom.kb_type = atom["kb_type"]
         obj_atom.source_quote = atom["source_quote"]
-        obj_atom.strength = 1.0 if atom["kb_type"] == "axiom" else 0.9
+        # Use the user-assigned strength from the config dialog directly,
+        # rather than re-deriving it from kb_type here.
+        obj_atom.strength = atom["strength"]
         engine.add_atom(obj_atom)
 
-    for rule in rules["rules"]:
+    for rule in rules_payload:
         obj_rule = module.Rule()
         obj_rule.id = rule["id"]
         obj_rule.conclusion = rule["conclusion"]
         obj_rule.premises = rule["premises"]
         obj_rule.type = rule["type"]
-        obj_rule.strength = 1.0 if rule["type"] == "strict" else 0.95
+        # Strict rules were already forced to 1.0 in the UI; trust the
+        # payload value directly rather than re-deriving it here too.
+        obj_rule.strength = rule["strength"]
         engine.add_rule(obj_rule)
 
-    sorted_args = topological_sort_arguments(args["arguments"])
+    sorted_args = topological_sort_arguments(args_payload)
 
     for arg in sorted_args:
         obj_arg = module.Argument()
@@ -101,24 +98,24 @@ def main():
         obj_arg.top_rule = arg["top_rule"]
         obj_arg.sub_arguments = arg["sub_arguments"]
         obj_arg.type = arg["type"]
-        obj_arg.strength = 1.0
+        obj_arg.strength = 1.0  # placeholder, overwritten by compute_argument_strengths()
         engine.add_argument(obj_arg)
 
-    for uc in attacks["undercutters"]:
+    for uc in attacks_payload["undercutters"]:
         obj_attack = module.Attack()
         obj_attack.attacker = uc[0]
         obj_attack.target = uc[1]
         obj_attack.type = "undercutter"
         engine.add_attack(obj_attack)
 
-    for rb in attacks["rebuttals"]:
+    for rb in attacks_payload["rebuttals"]:
         obj_attack = module.Attack()
         obj_attack.attacker = rb[0]
         obj_attack.target = rb[1]
         obj_attack.type = "rebuttal"
         engine.add_attack(obj_attack)
 
-    for um in attacks["underminers"]:
+    for um in attacks_payload["underminers"]:
         obj_attack = module.Attack()
         obj_attack.attacker = um[0]
         obj_attack.target = um[1]
@@ -130,10 +127,10 @@ def main():
 
     cycles = engine.compute_cycles()
     engine.compute_argument_strengths()
-    rounds = engine.propagate_strengths(0.7,0,0.001)
-    
+    rounds = engine.propagate_strengths(kappa, iters, epsilon)
+
     logs.append(Log(f"Rounds executed until strength converged: {rounds}.", "info"))
-    logs.append(Log(f"Engine took {time.perf_counter()-start:.4f} seconds to run.","info"))
+    logs.append(Log(f"Engine took {time.perf_counter()-start:.4f} seconds to run.", "info"))
 
     def print_atom(atom):
         print(atom.id, atom.kb_type, atom.text, atom.strength, sep="|", end="-")
@@ -146,7 +143,7 @@ def main():
 
     def print_attack(attack):
         print(attack.type, attack.target, attack.attacker, sep="|", end="-")
-    
+
     def print_log(log):
         print(log.text, log.type, sep="|", end="-")
 

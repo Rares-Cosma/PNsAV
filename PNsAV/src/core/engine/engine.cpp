@@ -115,7 +115,7 @@ int Engine::propagate_strengths(double kappa, int iter, float epsilon){
                         }
                     }
                 }
-                new_strength[arg.id] = int_str[arg.id] + kappa * std::tanh(alpha);
+                new_strength[arg.id] = std::clamp(int_str[arg.id] + kappa * std::tanh(alpha), 0.0, 1.0);
             }
             for (auto& arg : arguments) {
                 arg.strength = new_strength[arg.id];
@@ -141,7 +141,7 @@ int Engine::propagate_strengths(double kappa, int iter, float epsilon){
                 }
                 float move = std::abs(arg.strength - (int_str[arg.id] + kappa * std::tanh(alpha)));
                 if (move > max_move) max_move = move;
-                new_strength[arg.id] = int_str[arg.id] + kappa * std::tanh(alpha);
+                new_strength[arg.id] = std::clamp(int_str[arg.id] + kappa * std::tanh(alpha), 0.0, 1.0);
             }
             for (auto& arg : arguments) {
                 arg.strength = new_strength[arg.id];

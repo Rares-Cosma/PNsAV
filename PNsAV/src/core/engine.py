@@ -133,7 +133,7 @@ def main():
     logs.append(Log(f"Engine took {time.perf_counter()-start:.4f} seconds to run.", "info"))
 
     def print_atom(atom):
-        print(atom.id, atom.kb_type, atom.text, atom.strength, sep="|", end="-")
+        print(atom.id, atom.kb_type, atom.text, atom.strength, atom.source_quote, sep="|", end="-")
 
     def print_rule(rule):
         print(rule.id, rule.premises, rule.conclusion, rule.type, rule.strength, sep="|", end="-")

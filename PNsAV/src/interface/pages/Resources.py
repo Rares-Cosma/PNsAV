@@ -19,16 +19,19 @@ with nav_container:
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
 
     st.html("""
-    <style>
-    .st-key-navbar div[data-testid="stHorizontalBlock"] {
-        align-items: center !important;
-    }
-    .st-key-navbar div[data-testid="stColumn"] {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    </style>
+        <style>
+        .st-key-navbar div[data-testid="stHorizontalBlock"] {
+            align-items: center !important;
+        }
+        .st-key-navbar div[data-testid="stColumn"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .st-key-navbar div[data-testid="stColumn"]:not(:first-child) {
+            margin-top: -10px !important;
+        }
+        </style>
     """)
 
     with open("pnsav_logo.PNG", "rb") as image_file:

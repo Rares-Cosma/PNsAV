@@ -7,6 +7,60 @@ import json
 import ast
 import base64
 from datetime import datetime
+import colorsys
+import random
+
+import html as html_lib
+import re
+
+def highlight_text(text, quote_to_color):
+    """
+    text: the raw analyzed text
+    quote_to_color: dict mapping source_quote -> hex color string
+    """
+    matches = []
+    for quote, color in quote_to_color.items():
+        if not quote:
+            continue
+        start = 0
+        while True:
+            idx = text.lower().find(quote.lower(), start)
+            if idx == -1:
+                break
+            matches.append((idx, idx + len(quote), color))
+            start = idx + len(quote)
+
+    if not matches:
+        return html_lib.escape(text)
+
+    matches.sort(key=lambda m: m[0])
+    accepted = []
+    last_end = -1
+    for start, end, color in matches:
+        if start >= last_end:
+            accepted.append((start, end, color))
+            last_end = end
+
+    pieces = []
+    cursor = 0
+    for start, end, color in accepted:
+        pieces.append(html_lib.escape(text[cursor:start]))
+        highlighted = html_lib.escape(text[start:end])
+        pieces.append(
+            f'<span style="color:{color}; font-weight:600;">{highlighted}</span>'
+        )
+        cursor = end
+    pieces.append(html_lib.escape(text[cursor:]))
+    print("".join(pieces))
+
+    return "".join(pieces)
+
+def random_nice_color_dark_theme():
+    h = random.random()
+    s = random.uniform(0.5, 0.7)
+    l = random.uniform(0.55, 0.65)
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    return "#{:02x}{:02x}{:02x}".format(int(r*255), int(g*255), int(b*255))
 
 #TODO:
 # 2) text analizat (partial)
@@ -33,23 +87,29 @@ st.html(f"<style>{styles}</style>")
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Workspace"
-st.session_state["analysed_triggered"] = False
+if "analysed_triggered" not in st.session_state:
+    st.session_state["analysed_triggered"] = False
+if "engine_ran" not in st.session_state:
+    st.session_state["engine_ran"] = False
 
 nav_container = st.container(key="navbar")
 with nav_container:
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([7, 1, 1, 1])
 
     st.html("""
-    <style>
-    .st-key-navbar div[data-testid="stHorizontalBlock"] {
-        align-items: center !important;
-    }
-    .st-key-navbar div[data-testid="stColumn"] {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    </style>
+        <style>
+        .st-key-navbar div[data-testid="stHorizontalBlock"] {
+            align-items: center !important;
+        }
+        .st-key-navbar div[data-testid="stColumn"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .st-key-navbar div[data-testid="stColumn"]:not(:first-child) {
+            margin-top: -10px !important;
+        }
+        </style>
     """)
 
     with open("pnsav_logo.PNG", "rb") as image_file:
@@ -186,6 +246,7 @@ def config_dialog():
                 )
                 st.session_state["analysis_data"] = process.stdout.strip()
                 st.session_state["show_config_dialog"] = False
+                st.session_state["engine_ran"] = True
                 st.rerun()
             except subprocess.CalledProcessError as e:
                 st.error(f"❌ Script `engine.py` returned {e.returncode}")
@@ -203,6 +264,7 @@ with col_dreapta:
     arguments, attacks = [], []
 
     data = st.session_state.get("analysis_data", "")
+    sq2color = dict()
 
     if data:
         data_packets = data.split("@")
@@ -213,10 +275,12 @@ with col_dreapta:
 
         atoms = data_packets[0].split("-")
         id2text_atom = dict()
+        id2sq_atom = dict()
         for atom in atoms:
             if atom:
                 atom = atom.split("|")
                 id2text_atom[atom[0]] = atom[2]
+                id2sq_atom[atom[0]] = atom[4]
         arguments = data_packets[2].split("-")
         attacks = data_packets[3].split("-")
 
@@ -225,7 +289,9 @@ with col_dreapta:
                 info = arg.split("|")
                 print(info)
 
-                color = "#2865FF" if info[1] == "atomic" else "#FF5733"
+                color = random_nice_color_dark_theme() if info[1] == "atomic" else "#FF5733"
+                if info[1]=="atomic":
+                    sq2color[id2sq_atom[info[5]]]=color
                 size = 20 if info[1] == "atomic" else 25
 
                 label = f"Argument {info[0]}\nType: {info[1]}\nConclusion: {id2text_atom[info[5]]}"
@@ -276,10 +342,12 @@ with col_dreapta:
     with col_text:
         st.subheader("Analyzed text")
         text_html = """<div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;"></div>"""
-        if st.session_state["analysed_triggered"]:
+        if st.session_state["engine_ran"]:
+            quote_to_color = st.session_state.get("quote_colors", {})  # your source_quote -> color map
+            highlighted_text = highlight_text(st.session_state["analysed_text"], sq2color)
             text_html = f"""
             <div class="text-container" style="border: 1px solid #1f293d; padding: 15px; border-radius: 5px; background-color: #121620;">
-                <p>{st.session_state["analysed_text"]}</p>
+                <p>{highlighted_text}</p>
             </div>
             """
         st.html(text_html)

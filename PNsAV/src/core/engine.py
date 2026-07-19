@@ -3,6 +3,7 @@ import sys
 import time
 from pipeline import Log
 import os
+import platform
 
 def main():
     mingw_bin_path = r"C:\\msys64\\mingw64\bin"
@@ -123,6 +124,7 @@ def main():
     rounds = engine.propagate_strengths(kappa, iters, epsilon)
 
     logs.append(Log(f"Rounds executed until strength converged: {rounds}.", "info"))
+    logs.append(Log(f"Found {len(cycles)} cycles in the graph.", "info"))
     logs.append(Log(f"Engine took {time.perf_counter()-start:.4f} seconds to run.", "info"))
 
     def print_atom(atom):

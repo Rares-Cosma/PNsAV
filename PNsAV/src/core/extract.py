@@ -1,5 +1,6 @@
 from pipeline import *
 import os
+from pathlib import Path
 import sys
 
 def main():
@@ -10,7 +11,7 @@ def main():
         
     data = sys.argv[1]
 
-    pipeline = Pipeline("C:\\Users\\rares\\OneDrive\\Desktop\\infoed26\\PNsAV\\src\\agents_prompts")
+    pipeline = Pipeline(Path(__file__).resolve().parent.parent / "agents_prompts")
     atoms, rules, args, logs = pipeline.execute_orchestration(
         agents=["gpt-5.4-mini", "gpt-5.4-mini", "gpt-5.4-mini"],
         data=data,

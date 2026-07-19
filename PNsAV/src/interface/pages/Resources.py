@@ -6,6 +6,25 @@ BASE_DIR = Path(__file__).resolve().parent
 STYLE_PATH = BASE_DIR.resolve().parent / "style.css"
 LOGO_PATH = BASE_DIR / "pnsav_logo.PNG"
 
+def display_pdf(pdf_path: Path):
+    if not pdf_path.exists():
+        st.error(f"File not found: {pdf_path}")
+        return
+
+    with open(pdf_path, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode("utf-8")
+    
+    pdf_display = f'''
+    <iframe 
+        src="data:application/pdf;base64,{base64_pdf}" 
+        width="100%" 
+        height="800px" 
+        type="application/pdf">
+    </iframe>
+    '''
+    
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
 st.set_page_config(initial_sidebar_state="collapsed")
 
 st.set_page_config(
@@ -63,5 +82,14 @@ with nav_container:
             st.switch_page("pages/Contact.py")
 st.html("<div style='margin-bottom: 0px;'></div>")
 
-st.title("Resurse suplimentare")
-st.markdown("Documente suplimentare referitoare la framework-ul ASPIC+.")
+st.title("Resources")
+st.markdown("❗The scientific paper on PNsAV is at the bottom of this page.")
+
+md_text = ""
+ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
+
+with open(ROOT / "README.md","r",encoding="utf-8") as f:
+    md_text = f.read()
+
+st.markdown(md_text, unsafe_allow_html=True)
+display_pdf(ROOT / "documentation" / "paper" / "PNsAV.pdf")

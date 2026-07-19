@@ -164,7 +164,7 @@ with col_stanga:
             with st.spinner("Running background script..."):
                 try:
                     process = subprocess.run(
-                        [sys.executaqble, str(worker_path), st.session_state["analysed_text"]],
+                        [sys.executable, str(worker_path), st.session_state["analysed_text"]],
                         capture_output=True,
                         text=True,
                         check=True

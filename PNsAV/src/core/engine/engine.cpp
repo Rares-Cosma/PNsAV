@@ -123,7 +123,7 @@ int Engine::propagate_strengths(double kappa, int iter, float epsilon){
         }
         return iter;
     } else {
-        int safe_cap = 10000;
+        int safe_cap = 100000;
         float max_move = epsilon;
         while (max_move >= epsilon && safe_cap-- > 0) {
             max_move = 0.0;

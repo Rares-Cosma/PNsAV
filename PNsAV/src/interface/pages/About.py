@@ -1,5 +1,11 @@
 import streamlit as st
+from pathlib import Path
 import base64
+
+BASE_DIR = Path(__file__).resolve().parent
+STYLE_PATH = BASE_DIR.resolve().parent / "style.css"
+LOGO_PATH = BASE_DIR / "pnsav_logo.PNG"
+
 st.set_page_config(initial_sidebar_state="collapsed")
 
 st.set_page_config(
@@ -9,7 +15,7 @@ st.set_page_config(
 )
 
 styles = ""
-with open("style.css", "r") as style_file:
+with open(STYLE_PATH, "r") as style_file:
     styles = style_file.read()
 
 st.html(f"<style>{styles}</style>")
@@ -34,7 +40,7 @@ with nav_container:
         </style>
     """)
 
-    with open("pnsav_logo.PNG", "rb") as image_file:
+    with open(LOGO_PATH, "rb") as image_file:
         encoded_logo = base64.b64encode(image_file.read()).decode()
 
     with nav_col1:

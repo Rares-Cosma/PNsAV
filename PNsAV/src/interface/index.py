@@ -3,6 +3,7 @@ from streamlit_agraph import agraph, Node, Edge, Config
 from pathlib import Path
 import subprocess
 import json
+import sys
 import ast
 import base64
 from datetime import datetime
@@ -122,7 +123,7 @@ with nav_container:
         st.html(f"""
         <div class="nav-bar">
             <div class="nav-logo">
-                <a href="http://localhost:8501" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
+                <a href="http://pnsav-engine.streamlit.app" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
             </div>
         </div>
     """)
@@ -163,7 +164,7 @@ with col_stanga:
             with st.spinner("Running background script..."):
                 try:
                     process = subprocess.run(
-                        ["python", str(worker_path), st.session_state["analysed_text"]],
+                        [sys.executaqble, str(worker_path), st.session_state["analysed_text"]],
                         capture_output=True,
                         text=True,
                         check=True
@@ -241,7 +242,7 @@ def config_dialog():
         with st.spinner("Building arguments, resolving attacks, running engine..."):
             try:
                 process = subprocess.run(
-                    ["python", str(engine_path)],
+                    [sys.executable, str(engine_path)],
                     input=payload,
                     capture_output=True,
                     text=True,

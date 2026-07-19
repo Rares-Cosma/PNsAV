@@ -46,7 +46,7 @@ with nav_container:
         st.html(f"""
         <div class="nav-bar">
             <div class="nav-logo">
-                <a href="http://localhost:8501" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
+                <a href="http://pnsav-engine.streamlit.app" id="logo"><img src="data:image/png;base64,{encoded_logo}" alt="Logo" style="height: 80px; width: auto; object-fit: contain;"></a>
             </div>
         </div>
     """)

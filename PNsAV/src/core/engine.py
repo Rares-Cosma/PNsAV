@@ -47,7 +47,6 @@ def main():
 
         return [id_to_arg[aid] for aid in sorted_ids]
 
-    # ---------- Read everything from stdin instead of globals ----------
     payload = json.loads(sys.stdin.read())
 
     atoms_payload = payload["atoms"]
@@ -59,8 +58,6 @@ def main():
     epsilon = payload["epsilon"]
     iters = payload["iters"]
 
-    # Reconstruct Log objects from the extraction stage's logs, since
-    # that subprocess's in-memory state doesn't carry over here.
     logs = [Log(l[0], l[1]) for l in prior_logs]
 
     start = time.perf_counter()
@@ -73,8 +70,6 @@ def main():
         obj_atom.text = atom["text"]
         obj_atom.kb_type = atom["kb_type"]
         obj_atom.source_quote = atom["source_quote"]
-        # Use the user-assigned strength from the config dialog directly,
-        # rather than re-deriving it from kb_type here.
         obj_atom.strength = atom["strength"]
         engine.add_atom(obj_atom)
 
@@ -84,8 +79,6 @@ def main():
         obj_rule.conclusion = rule["conclusion"]
         obj_rule.premises = rule["premises"]
         obj_rule.type = rule["type"]
-        # Strict rules were already forced to 1.0 in the UI; trust the
-        # payload value directly rather than re-deriving it here too.
         obj_rule.strength = rule["strength"]
         engine.add_rule(obj_rule)
 
@@ -98,7 +91,7 @@ def main():
         obj_arg.top_rule = arg["top_rule"]
         obj_arg.sub_arguments = arg["sub_arguments"]
         obj_arg.type = arg["type"]
-        obj_arg.strength = 1.0  # placeholder, overwritten by compute_argument_strengths()
+        obj_arg.strength = 1.0
         engine.add_argument(obj_arg)
 
     for uc in attacks_payload["undercutters"]:

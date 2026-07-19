@@ -11,7 +11,7 @@ Rolul inteligenței artificiale în viața fiecăruia a crescut substanțial în
 
 ## 💾 Descrierea soluției
 
-Pentru a rezolva problema expusă anterior, propunem PNsAV (Probabilistic Neurosymbolic Argument Validation model), un pipeline end-to-end care preia limbaj natural de la utilizator, extrage structurile argumentative și le analizează folosind semantici graduale, pentru a returna utilizatorului un scor reprezentativ corespunzător fiecărui argument, înglobat în graful argumentativ. Extragerea se efectuează printr-o orchestrație de LLMuri constrânse în structura ASPIC$^+$ (bazată pe framework-urile de argumentare abstracte a lui Dung). Acestea sunt apoi organizate într-un semi-weighted argumentation graph (WAG) cu coeficienții calculați după principiile lui Spaans de compunere a "intrinsic strength". Pe acest graf se rulează un algoritm de propagare generic, care descrie valorile finale. Această structură elimină pe cât se poate posibilitatea de halucinare a LLMului, bazându-se pe logică.
+Pentru a rezolva problema expusă anterior, propunem PNsAV (Probabilistic Neurosymbolic Argument Validation model), un pipeline end-to-end care preia limbaj natural de la utilizator, extrage structurile argumentative și le analizează folosind semantici graduale, pentru a returna utilizatorului un scor reprezentativ corespunzător fiecărui argument, înglobat în graful argumentativ. Extragerea se efectuează printr-o orchestrație de LLMuri constrânse în structura ASPIC+ (bazată pe framework-urile de argumentare abstracte a lui Dung). Acestea sunt apoi organizate într-un semi-weighted argumentation graph (WAG) cu coeficienții calculați după principiile lui Spaans de compunere a "intrinsic strength". Pe acest graf se rulează un algoritm de propagare generic, care descrie valorile finale. Această structură elimină pe cât se poate posibilitatea de halucinare a LLMului, bazându-se pe logică.
 
 ## 👥 Publicul țintă
 
@@ -32,9 +32,9 @@ Publicul țintă se poate împărți în 2 grupuri:
 ### **Module principale**
 
 * **UI/UX** - Interfața prin care utilizatorul interacționează cu motorul logic. Colectează și trimite datele tutoror modulelor.
-* **LLM Extractor** - Primind textul pentru analiză de la interfață, acest modul utilizează o orchestrație de 3 LLMuri pentru a extrage structura ASPIC$^+$ a textului, având un model de limbaj pentru atomi, reguli și argumente.
+* **LLM Extractor** - Primind textul pentru analiză de la interfață, acest modul utilizează o orchestrație de 3 LLMuri pentru a extrage structura ASPIC+ a textului, având un model de limbaj pentru atomi, reguli și argumente.
 * **Validator** - Validatorul are un rol esențial, acesta asigurând corectitudinea structurii argumentative generate, cât și generarea muchiilor de pe graf (atacuri).
-* **Engine** - Motorul logic preia structura ASPIC$^+$ și scorurile date de către utilizator pentru fiecare propoziție și regulă logică, calculează puterea inițială a unui argument, iar apoi rulează un algoritm de propagare până la convergență.
+* **Engine** - Motorul logic preia structura ASPIC+ și scorurile date de către utilizator pentru fiecare propoziție și regulă logică, calculează puterea inițială a unui argument, iar apoi rulează un algoritm de propagare până la convergență.
 
 <img src="pipeline.png" alt="Logo" width="auto" height="auto">
 </p>

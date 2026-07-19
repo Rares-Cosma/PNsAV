@@ -8,9 +8,12 @@ import base64
 from datetime import datetime
 import colorsys
 import random
-
 import html as html_lib
 import re
+
+BASE_DIR = Path(__file__).resolve().parent
+STYLE_PATH = BASE_DIR / "style.css"
+LOGO_PATH = BASE_DIR / "pnsav_logo.PNG"
 
 def highlight_text(text, quote_to_color):
     """
@@ -79,7 +82,7 @@ st.set_page_config(
 
 data = ""
 styles = ""
-with open("style.css", "r") as style_file:
+with open(STYLE_PATH, "r") as style_file:
     styles = style_file.read()
 
 st.html(f"<style>{styles}</style>")
@@ -111,7 +114,7 @@ with nav_container:
         </style>
     """)
 
-    with open("pnsav_logo.PNG", "rb") as image_file:
+    with open(LOGO_PATH, "rb") as image_file:
         encoded_logo = base64.b64encode(image_file.read()).decode()
 
     with nav_col1:

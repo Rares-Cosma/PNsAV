@@ -1,6 +1,5 @@
 import streamlit as st
 from streamlit_agraph import agraph, Node, Edge, Config
-from st_click_detector import click_detector
 from pathlib import Path
 import subprocess
 import json

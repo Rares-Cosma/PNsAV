@@ -32,7 +32,9 @@ Publicul țintă se poate împărți în 2 grupuri:
 * **Validator** - Validatorul are un rol esențial, acesta asigurând corectitudinea structurii argumentative generate, cât și generarea muchiilor de pe graf (atacuri).
 * **Engine** - Motorul logic preia structura ASPIC+ și scorurile date de către utilizator pentru fiecare propoziție și regulă logică, calculează puterea inițială a unui argument, iar apoi rulează un algoritm de propagare până la convergență.
 
-![[pipeline.png]]
+<p align="center">
+<img src="pipeline.png" alt="Logo" width="auto" height="auto">
+</p>
 
 ### **Tehnologii**
 

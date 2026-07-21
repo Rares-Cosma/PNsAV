@@ -147,6 +147,6 @@ int Engine::propagate_strengths(double kappa, int iter, float epsilon){
                 arg.strength = new_strength[arg.id];
             }
         }
-        return 10000-safe_cap;
+        return 100000-safe_cap;
     }
 }

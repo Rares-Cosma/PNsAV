@@ -6,14 +6,8 @@ import os
 import platform
 
 def main():
-    mingw_bin_path = r"C:\\msys64\\mingw64\bin"
 
-    if os.path.exists(mingw_bin_path):
-        os.add_dll_directory(mingw_bin_path)
-    else:
-        print(f"Warning: MinGW path not found at {mingw_bin_path}. Check your installation.", file=sys.stderr)
-
-    from engine import ArgEngine as module
+    import ArgEngine as module
 
     def topological_sort_arguments(arguments):
         id_to_arg = {arg["id"]: arg for arg in arguments}

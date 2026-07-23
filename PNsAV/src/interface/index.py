@@ -11,7 +11,6 @@ import colorsys
 import random
 import html as html_lib
 import re
-import openai
 
 BASE_DIR = Path(__file__).resolve().parent
 STYLE_PATH = BASE_DIR / "style.css"

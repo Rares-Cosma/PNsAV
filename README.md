@@ -38,7 +38,7 @@ Publicul țintă se poate împărți în 2 grupuri:
 
 ### **Tehnologii**
 
-PNsAV folosește Python pentru extragerea structurilor argumentative și validarea acestora, dar C++ este baza motorului de propagare și calcul a coeficienților inițiali, din pricina performanței ridicate. Python este utilizat din cauza legăturii ușoare cu OpenAI API (care furnizează LLM-urile de tip GPT 5.4 folosite) dar și facilitatea construirii unei interfețe video cu Streamlit. Alte biblioteci utile sunt ```ast, json, Pathlib```. Motorul logic este scris în întregime în C++, fără folosirea altor biblioteci externe, în afară de ```pybind11```, pentru legătura cu interfața. 
+PNsAV folosește Python pentru extragerea structurilor argumentative și validarea acestora, dar C++ este baza motorului de propagare și calcul a coeficienților inițiali, datorită performanței ridicate. Python este utilizat din cauza legăturii ușoare cu OpenAI API (care furnizează LLM-urile de tip GPT 5.4 folosite) dar și facilitatea construirii unei interfețe video cu Streamlit. Alte biblioteci utile sunt ```ast, json, Pathlib```. Motorul logic este scris în întregime în C++, fără folosirea altor biblioteci externe, în afară de ```pybind11```, pentru legătura cu interfața. 
 ## 🖥️ Instalare
 
 ### 1. Compilarea sursei

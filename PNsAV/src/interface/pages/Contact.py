@@ -61,7 +61,33 @@ with nav_container:
         if st.button("Contact", use_container_width=True):
             st.switch_page("pages/Contact.py")
 
-st.html("<div style='margin-bottom: 0px;'></div>")
+st.html("""
+<div style="text-align:center; margin-top:80px;">
 
-st.title("Ghid de Utilizare")
-st.markdown("1. Încarcă un text sau un fișier.\n2. Apasă 'Analizează' pentru a rula backend-ul.")
+    <h1 style="
+        font-size:60px;
+        font-weight:700;
+        color:white;
+        margin-bottom:40px;
+    ">
+        Contact
+    </h1>
+
+    <p style="
+        font-size:24px;
+        color:#d1d5db;
+        line-height:1.8;
+    ">
+        For questions, collaborations, or suggestions,
+        feel free to contact us at:
+    </p>
+
+    
+    <p style="margin-top:25px;">
+        <a href="mailto:pnsav@gmail.com" class="email-link">
+            pnsav@gmail.com
+        </a>
+    </p>
+
+</div>
+""")

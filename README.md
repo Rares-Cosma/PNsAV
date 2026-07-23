@@ -7,10 +7,10 @@
 
 ## ❓ Descrierea problemei
 
-Rolul inteligenței artificiale în viața fiecăruia a crescut substanțial în ultimul deceniu, iar implicațiile modelelor de limbaj în domenii precum drept, filosofie și medicină devin semnificative. Fiind modele statistice, LLMurile oferă o capacitate generativă excelentă. Totuși, când le folosim în poziții decizionale, care necesită raționare, acestea devin redundante, expunând mai degrabă soluția probabilă din punct de vedere lingvistic, adesea contrară celei raționale.
+Rolul inteligenței artificiale în viața fiecăruia a crescut substanțial în ultimul deceniu, iar implicațiile modelelor de limbaj în domenii precum drept, filosofie și medicină devin semnificative. Fiind modele statistice, LLM-urile oferă o capacitate generativă excelentă. Totuși, când le folosim în poziții decizionale, care necesită raționare, acestea devin redundante, expunând mai degrabă soluția probabilă din punct de vedere lingvistic, adesea contrară celei raționale.
 ## 💾 Descrierea soluției
 
-Pentru a rezolva problema expusă anterior, propunem PNsAV (Probabilistic Neurosymbolic Argument Validation model), un pipeline end-to-end care preia limbaj natural de la utilizator, extrage structurile argumentative și le analizează folosind semantici graduale, pentru a returna utilizatorului un scor reprezentativ corespunzător fiecărui argument, înglobat în graful argumentativ. Extragerea se efectuează printr-o orchestrație de LLMuri constrânse în structura ASPIC$^+$ (bazată pe framework-urile de argumentare abstracte a lui Dung). Acestea sunt apoi organizate într-un semi-weighted argumentation graph (WAG) cu coeficienții calculați după principiile lui Spaans de compunere a "intrinsic strength". Pe acest graf se rulează un algoritm de propagare generic, care descrie valorile finale. Această structură elimină pe cât se poate posibilitatea de halucinare a LLMului, bazându-se pe logică.
+Pentru a rezolva problema expusă anterior, propunem PNsAV (Probabilistic Neurosymbolic Argument Validation model), un pipeline end-to-end care preia limbaj natural de la utilizator, extrage structurile argumentative și le analizează folosind semantici graduale, pentru a returna utilizatorului un scor reprezentativ corespunzător fiecărui argument, înglobat în graful argumentativ. Extragerea se efectuează printr-o orchestrație de LLM-uri constrânse în structura ASPIC$^+$ (bazată pe framework-urile de argumentare abstracte a lui Dung). Acestea sunt apoi organizate într-un semi-weighted argumentation graph (WAG) cu coeficienții calculați după principiile lui Spaans de compunere a "intrinsic strength". Pe acest graf se rulează un algoritm de propagare generic, care descrie valorile finale. Această structură elimină pe cât se poate posibilitatea de halucinare a LLM-ului, bazându-se pe logică.
 ## 👥 Publicul țintă
 
 Publicul țintă se poate împărți în 2 grupuri:
@@ -28,7 +28,7 @@ Publicul țintă se poate împărți în 2 grupuri:
 ### **Module principale**
 
 * **UI/UX** - Interfața prin care utilizatorul interacționează cu motorul logic. Colectează și trimite datele tutoror modulelor.
-* **LLM Extractor** - Primind textul pentru analiză de la interfață, acest modul utilizează o orchestrație de 3 LLMuri pentru a extrage structura ASPIC+ a textului, având un model de limbaj pentru atomi, reguli și argumente.
+* **LLM Extractor** - Primind textul pentru analiză de la interfață, acest modul utilizează o orchestrație de 3 LLM-uri pentru a extrage structura ASPIC+ a textului, având un model de limbaj pentru atomi, reguli și argumente.
 * **Validator** - Validatorul are un rol esențial, acesta asigurând corectitudinea structurii argumentative generate, cât și generarea muchiilor de pe graf (atacuri).
 * **Engine** - Motorul logic preia structura ASPIC+ și scorurile date de către utilizator pentru fiecare propoziție și regulă logică, calculează puterea inițială a unui argument, iar apoi rulează un algoritm de propagare până la convergență.
 
@@ -55,7 +55,7 @@ Pentru a analiza competiția, am citit literatura de specialitate, unde am ident
 Pentru motorul logic am ales C++ deoarece oferă compatibilitate indiferent de platforma aleasă, performanță și suportă nativ programarea orientată pe obiecte. Python este folosit pentru argument mining și interfață pentru că are acces simplu la biblioteci precum OpenAI și Streamlit. Am ales Streamlit pentru grafică deoarece este o bibliotecă grafică pentru aplicații cu date, producând un web app ușor de găzduit și întreținut.
 ## 💡 Opinia noastră
 
-Noi credem că AI-ul nu ar trebui să fie un fenomen înspăimântător și analog nici mersul la doctor, în sala de judecată sau discuția într-un cadru politic nu ar trebui să ne provoace frici în legătură cu decizii importante luate de un model lingvistic. Așadar, am creat PNsAV, pentru a combate volatilitatea unui LLM. 
+Noi credem că AI-ul nu ar trebui să fie un fenomen înspăimântător, așa cum nici mersul la doctor, participarea în sala de judecată sau discuția într-un cadru politic nu ar trebui să ne provoace frici în legătură cu decizii importante luate de un model lingvistic. Așadar, am creat PNsAV, pentru a combate volatilitatea unui LLM. 
 
 ## 🌇 Dezvoltări ulterioare
 

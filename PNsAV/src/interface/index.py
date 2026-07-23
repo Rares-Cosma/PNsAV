@@ -303,7 +303,7 @@ with col_dreapta:
                 nodes.append(
                     Node(
                         id=str(info[0]), 
-                        label=str(round(float(info[4]), 3)),
+                        label=str(round(float(info[4]), 2)),
                         title=label,
                         size=size, 
                         color=color,

@@ -1,6 +1,12 @@
 #pragma once
+#include <unordered_set>
 #include "data.h"
 
-bool is_cycle(std::vector<bool>& visited, std::vector<bool>& recStack, int idx, 
-              std::vector<ArgumentAdj>& arg_adj, const std::unordered_map<std::string, int>& id_to_index, 
-              std::vector<int>& parent, int& cycle_end);
+bool find_cycles_dfs(
+    const std::string& start,
+    const std::string& current,
+    std::unordered_map<std::string, std::vector<std::string>>& adj,
+    std::unordered_set<std::string>& blocked,
+    std::vector<std::string>& path,
+    std::vector<std::vector<std::string>>& cycles
+);

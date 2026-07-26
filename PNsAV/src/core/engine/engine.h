@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <set>
 #include "symbolic_utils.h"
 
 class Engine {
@@ -21,7 +22,7 @@ class Engine {
         void build_attack_map();
         void build_argumentadj_vector();
 
-        std::vector<Argument> compute_cycles();
+        std::vector<std::vector<Argument>> compute_cycles();
         void compute_argument_strengths();
         int propagate_strengths(double kappa, int iter, float epsilon);
 };

@@ -4,6 +4,7 @@
 #include <optional>
 #include <unordered_map>
 #include <cmath>
+#include <algorithm>
 
 struct Atom {
     std::string id;

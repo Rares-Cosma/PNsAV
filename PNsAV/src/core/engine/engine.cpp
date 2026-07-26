@@ -45,26 +45,37 @@ std::vector<Argument> Engine::compute_cycles() {
     int n = argumentadj.size();
     std::vector<bool> visited(n, false);
     std::vector<bool> recStack(n, false);
+    std::vector<int> parent(n, -1);
 
     std::unordered_map<std::string, int> id_to_index;
     for (int i = 0; i < n; i++) {
         id_to_index[argumentadj[i].id] = i;
     }
 
+    int cycle_end = -1;
+    int cycle_start = -1;
+
     for (int i = 0; i < n; i++) {
-        if (!visited[i] && is_cycle(visited, recStack, i, argumentadj, id_to_index)) {
-            std::vector<Argument> cycle_args;
-            
-            for (int j = 0; j < n; j++) {
-                if (recStack[j]) {
-                    cycle_args.push_back(arguments[j]); 
-                }
+        if (!visited[i]) {
+            if (is_cycle(visited, recStack, i, argumentadj, id_to_index, parent, cycle_end)) {
+                cycle_start = parent[cycle_end];
+                break;
             }
-            return cycle_args;
         }
     }
 
-    return {};
+    if (cycle_end == -1) return {};
+
+    std::vector<Argument> cycle_args;
+    int curr = cycle_start;
+    cycle_args.push_back(arguments[curr]);
+
+    while (curr != cycle_end && curr != -1) {
+        curr = parent[curr];
+        cycle_args.push_back(arguments[curr]);
+    }
+
+    return cycle_args;
 }
 
 void Engine::compute_argument_strengths() {

@@ -26,7 +26,7 @@ bool find_cycles_dfs(
     }
 
     path.pop_back();
-    blocked.erase(current); // <-- Unconditionally unblock on every step back
+    blocked.erase(current);
     
     return found_cycle;
 }

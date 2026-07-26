@@ -42,7 +42,6 @@ void Engine::build_argumentadj_vector() {
 }
 
 std::vector<std::vector<Argument>> Engine::compute_cycles() {
-    // 1. Build Adjacency Map from argumentadj
     std::unordered_map<std::string, std::vector<std::string>> adj_map;
     std::vector<std::string> nodes;
     for (const auto& arg_adj : argumentadj) {
@@ -50,19 +49,16 @@ std::vector<std::vector<Argument>> Engine::compute_cycles() {
         nodes.push_back(arg_adj.id);
     }
 
-    // Sort node IDs to maintain consistent ordering for cycle canonicalization
     std::sort(nodes.begin(), nodes.end());
 
     std::vector<std::vector<std::string>> raw_string_cycles;
 
-    // 2. Search cycles rooted at each node
     for (size_t i = 0; i < nodes.size(); ++i) {
         std::unordered_set<std::string> blocked;
         std::vector<std::string> path;
         find_cycles_dfs(nodes[i], nodes[i], adj_map, blocked, path, raw_string_cycles);
     }
 
-    // 3. Map string IDs back to Argument objects
     std::unordered_map<std::string, Argument> arg_lookup;
     for (const auto& arg : arguments) {
         arg_lookup[arg.id] = arg;

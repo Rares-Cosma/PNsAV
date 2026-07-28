@@ -13,7 +13,7 @@ def main():
 
     pipeline = Pipeline(Path(__file__).resolve().parent.parent / "agents_prompts")
     atoms, rules, args, logs = pipeline.execute_orchestration(
-        agents=["gpt-5.4-mini", "gpt-5.4-mini", "gpt-5.4-mini"],
+        agents=["gpt-5.6-sol", "gpt-5.6-sol", "gpt-5.6-sol"],
         data=data,
         schemas=[pipeline.atom_schema, pipeline.rule_schema, pipeline.arg_schema]
     )

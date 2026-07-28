@@ -49,7 +49,7 @@ class Model:
 
         response = self.client.chat.completions.create(
             model=agent_id,
-            temperature=0,
+            temperature=1,
             messages=messages,
             response_format={
                 "type": "json_schema",

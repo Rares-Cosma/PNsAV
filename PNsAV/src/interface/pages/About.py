@@ -131,7 +131,7 @@ st.html("""
                     margin-top: 0;
                     margin-bottom: 6px;
                     font-weight: 700;
-                ">[Lăzărescu Larisa-Ioana]</h3>
+                ">Lăzărescu Larisa-Ioana</h3>
                 <span style="
                     display: inline-block;
                     font-size: 13px;
@@ -165,7 +165,7 @@ st.html("""
                     margin-top: 0;
                     margin-bottom: 6px;
                     font-weight: 700;
-                ">[Cosma Rareș-Gabriel]</h3>
+                ">Cosma Rareș-Gabriel</h3>
                 <span style="
                     display: inline-block;
                     font-size: 13px;

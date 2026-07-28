@@ -83,7 +83,7 @@ st.html("""
     </p>
 
     
-    <p style="margin-top:25px;">
+    <p style="margin-top:25px; font-size:25px;">
         <a href="mailto:pnsav@gmail.com" class="email-link">
             pnsav@gmail.com
         </a>

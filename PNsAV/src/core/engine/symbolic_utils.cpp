@@ -1,21 +1,32 @@
 #include "symbolic_utils.h"
 
-bool is_cycle(std::vector<bool>& visited, std::vector<bool>& recStack, int idx, std::vector<ArgumentAdj>& arg_adj, const std::unordered_map<std::string, int>& id_to_index) {
-    if (recStack[idx]) return true;  
-    if (visited[idx]) return false;
+bool find_cycles_dfs(
+    const std::string& start,
+    const std::string& current,
+    std::unordered_map<std::string, std::vector<std::string>>& adj,
+    std::unordered_set<std::string>& blocked,
+    std::vector<std::string>& path,
+    std::vector<std::vector<std::string>>& cycles
+) {
+    bool found_cycle = false;
+    path.push_back(current);
+    blocked.insert(current);
 
-    recStack[idx] = true;
-    visited[idx] = true;
-
-    for (const auto& neighbor_id : arg_adj[idx].adj) {
-        auto it = id_to_index.find(neighbor_id);
-        if (it != id_to_index.end()) {
-            int neighbor_idx = it->second;
-            if (is_cycle(visited, recStack, neighbor_idx, arg_adj, id_to_index)) {
-                return true;
+    if (adj.count(current)) {
+        for (const std::string& neighbor : adj[current]) {
+            if (neighbor == start) {
+                cycles.push_back(path);
+                found_cycle = true;
+            } else if (neighbor > start && blocked.find(neighbor) == blocked.end()) {
+                if (find_cycles_dfs(start, neighbor, adj, blocked, path, cycles)) {
+                    found_cycle = true;
+                }
             }
         }
     }
-    recStack[idx] = false;
-    return false;
+
+    path.pop_back();
+    blocked.erase(current);
+    
+    return found_cycle;
 }

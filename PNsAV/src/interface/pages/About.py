@@ -147,7 +147,8 @@ st.html("""
                     line-height: 1.6;
                     margin: 0;
                 ">
-                    S-a ocupat de proiectarea și dezvoltarea interfeței aplicației, creând un mediu intuitiv și modern pentru utilizatori.
+                 Bună! Eu sunt Larisa și în proiectul PNsAV m-am ocupat de interfața grafică, pe care am implementat-o în Python, streamlit.
+Din dorința de a experimenta și de a trăi experiențe noi, m-am înscris la InfoEducație, încrezătoare în ce am creat cu colegul meu. 
                 </p>
             </div>
             <div style="
@@ -181,7 +182,10 @@ st.html("""
                     line-height: 1.6;
                     margin: 0;
                 ">
-                    A implementat modelele neuro-simbolice și algoritmii de validare a structurilor argumentative, asigurând procesarea riguroasă a datelor.
+            Sunt Rareș-Gabriel Cosma, sunt pasionat de informatică și sisteme de când eram mic. Pentru a putea să-mi dezvolt capabilitățile m-am înscris la InfoEducație cu proiectul PNsAV.
+
+Am lucrat la partea de backend și logică pentru PNsAV, implementând teoria argumentației în cod. Folosindu-mă de cercetări din domeniu,
+am construit un pipeline end-to-end care calculează gradul de justificabilitate al fiecărui argument în parte.
                 </p>
             </div>
         </div>

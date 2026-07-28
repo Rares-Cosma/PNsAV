@@ -146,7 +146,6 @@ with col_stanga:
     uploaded_file = st.file_uploader("Drag & drop your file here", type=["txt"], label_visibility="collapsed")
     st.html("<div style='font-size:13px; font-weight:bold; color:#8b9eb7; margin-bottom:8px;'>Paste your text:</div>")
     
-    # Input Text
     user_text = st.text_area("Text Input", height=200, placeholder="Paste your text...", label_visibility="collapsed")
     #st.html(f"<div style='text-align:right; font-size:11px; color:#53647a; margin-top:-5px; margin-bottom:15px;'>{len(user_text)} / 10000</div>")
     
@@ -174,6 +173,7 @@ with col_stanga:
                     st.session_state["rules"] = ast.literal_eval(extracted.split("@")[1])["rules"]
                     st.session_state["args"] = json.loads(extracted.split("@")[2])["arguments"]
                     st.session_state["attacks"] = ast.literal_eval(extracted.split("@")[3])
+                    print(ast.literal_eval(extracted.split("@")[3]))
                     st.session_state["logs"] = ast.literal_eval(extracted.split("@")[4])
                 except subprocess.CalledProcessError as e:
                     st.error(f"❌ Script `extract.py` returned {e.returncode}")
@@ -181,7 +181,6 @@ with col_stanga:
                     st.code(e.stderr if e.stderr else "No error text was written to stderr.", language="bash")
 
 
-# ---------- Config dialog: same UI, "Run Engine" now actually runs it ----------
 @st.dialog("Configure Analysis Parameters")
 def config_dialog():
     st.subheader("Propagation Settings")

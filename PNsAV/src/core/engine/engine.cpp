@@ -41,30 +41,43 @@ void Engine::build_argumentadj_vector() {
     }
 }
 
-std::vector<Argument> Engine::compute_cycles() {
-    int n = argumentadj.size();
-    std::vector<bool> visited(n, false);
-    std::vector<bool> recStack(n, false);
-
-    std::unordered_map<std::string, int> id_to_index;
-    for (int i = 0; i < n; i++) {
-        id_to_index[argumentadj[i].id] = i;
+std::vector<std::vector<Argument>> Engine::compute_cycles() {
+    std::unordered_map<std::string, std::vector<std::string>> adj_map;
+    std::vector<std::string> nodes;
+    for (const auto& arg_adj : argumentadj) {
+        adj_map[arg_adj.id] = arg_adj.adj;
+        nodes.push_back(arg_adj.id);
     }
 
-    for (int i = 0; i < n; i++) {
-        if (!visited[i] && is_cycle(visited, recStack, i, argumentadj, id_to_index)) {
-            std::vector<Argument> cycle_args;
-            
-            for (int j = 0; j < n; j++) {
-                if (recStack[j]) {
-                    cycle_args.push_back(arguments[j]); 
-                }
+    std::sort(nodes.begin(), nodes.end());
+
+    std::vector<std::vector<std::string>> raw_string_cycles;
+
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        std::unordered_set<std::string> blocked;
+        std::vector<std::string> path;
+        find_cycles_dfs(nodes[i], nodes[i], adj_map, blocked, path, raw_string_cycles);
+    }
+
+    std::unordered_map<std::string, Argument> arg_lookup;
+    for (const auto& arg : arguments) {
+        arg_lookup[arg.id] = arg;
+    }
+
+    std::vector<std::vector<Argument>> all_cycles;
+    for (const auto& string_cycle : raw_string_cycles) {
+        std::vector<Argument> cycle_args;
+        for (const auto& id : string_cycle) {
+            if (arg_lookup.count(id)) {
+                cycle_args.push_back(arg_lookup[id]);
             }
-            return cycle_args;
+        }
+        if (!cycle_args.empty()) {
+            all_cycles.push_back(cycle_args);
         }
     }
 
-    return {};
+    return all_cycles;
 }
 
 void Engine::compute_argument_strengths() {

@@ -1,4 +1,4 @@
-Role: Logic Transcriber (ASPIC+ Structure)
+Role: Logical Rule Transcriber
 Your task is not to reason, interpret, or repair arguments.
 Your task is to transcribe explicit logical structure from Natural Language into ASPIC+ rules and conflicts using the provided Atoms.
 You must behave like a compiler translating syntax, not a logician evaluating arguments.
@@ -81,8 +81,18 @@ MANDATORY: You must include a "scratchpad" string in your JSON before the "rules
 Examples
 
 Example 1 — Rebuttal (Contraries)
-Text: If a bird has wings, it can fly. If a bird is a penguin, it cannot fly.
-Atoms: a1: bird_wings, a2: can_fly, a3: bird_penguin, a4: cannot_fly
+Input Text: If a bird has wings, it can fly. If a bird is a penguin, it cannot fly.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "A bird has wings", "kb_type": "premise", "source_quote": "a bird has wings"},
+    {"id": "a2", "text": "A bird can fly", "kb_type": "premise", "source_quote": "it can fly"},
+    {"id": "a3", "text": "A bird is a penguin", "kb_type": "premise", "source_quote": "a bird is a penguin"},
+    {"id": "a4", "text": "A bird cannot fly", "kb_type": "premise", "source_quote": "it cannot fly"}
+  ]
+}
 Output:
 
 JSON
@@ -97,10 +107,18 @@ JSON
     "undercutters": []
   }
 }
-
 Example 2 — The Undercutter
-Text: If it is sunny, we have a picnic, unless the park is closed.
-Atoms: a1: sunny, a2: picnic, a3: park_closed
+Input Text: If it is sunny, we have a picnic, unless the park is closed.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "It is sunny", "kb_type": "premise", "source_quote": "it is sunny"},
+    {"id": "a2", "text": "We have a picnic", "kb_type": "premise", "source_quote": "we have a picnic"},
+    {"id": "a3", "text": "The park is closed", "kb_type": "premise", "source_quote": "the park is closed"}
+  ]
+}
 Output:
 
 JSON
@@ -116,10 +134,18 @@ JSON
     ]
   }
 }
+Example 3 — OR Disjunction Split
+Input Text: If a contract is signed under threat or deception, it is signed under duress.
+Input Atoms:
 
-Example 1 — OR Disjunction Split
-Text: If a contract is signed under threat or deception, it is signed under duress.
-Atoms: a1: threat, a2: deception, a3: duress
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "A contract is signed under threat", "kb_type": "premise", "source_quote": "threat"},
+    {"id": "a2", "text": "A contract is signed under deception", "kb_type": "premise", "source_quote": "deception"},
+    {"id": "a3", "text": "A contract is signed under duress", "kb_type": "premise", "source_quote": "duress"}
+  ]
+}
 Output:
 
 JSON
@@ -130,9 +156,18 @@ JSON
     {"id": "r2", "premises": ["a2"], "conclusion": "a3", "type": "strict"}
   ]
 }
-Example 2 — Contextual Instantiation (Bridge Rule Generation)
-Text: If an animal is a dog, it is a mammal. Buddy is a dog.
-Atoms: a1: animal_is_dog, a2: animal_is_mammal, a3: buddy_is_dog
+Example 4 — Contextual Instantiation (Bridge Rule Generation)
+Input Text: If an animal is a dog, it is a mammal. Buddy is a dog.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "An animal is a dog", "kb_type": "premise", "source_quote": "an animal is a dog"},
+    {"id": "a2", "text": "An animal is a mammal", "kb_type": "premise", "source_quote": "it is a mammal"},
+    {"id": "a3", "text": "Buddy is a dog", "kb_type": "premise", "source_quote": "Buddy is a dog"}
+  ]
+}
 Output:
 
 JSON
@@ -143,9 +178,19 @@ JSON
     {"id": "r2", "premises": ["a3"], "conclusion": "a1", "type": "strict"}
   ]
 }
-Example 3 — General Rule + Explicit Instance (Multi-step Bridge)
-Text: If a person is a minor, the contract is voidable. Alex is a minor, therefore the contract is voidable.
-Atoms: a1: person_is_minor, a2: contract_voidable, a3: alex_is_minor, a4: this_contract_voidable
+Example 5 — General Rule + Explicit Instance (Multi-step Bridge)
+Input Text: If a person is a minor, the contract is voidable. Alex is a minor, therefore the contract is voidable.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "A person is a minor", "kb_type": "premise", "source_quote": "a person is a minor"},
+    {"id": "a2", "text": "A contract is voidable", "kb_type": "premise", "source_quote": "the contract is voidable"},
+    {"id": "a3", "text": "Alex is a minor", "kb_type": "premise", "source_quote": "Alex is a minor"},
+    {"id": "a4", "text": "This contract is voidable", "kb_type": "premise", "source_quote": "the contract is voidable"}
+  ]
+}
 Output:
 
 JSON
@@ -157,9 +202,18 @@ JSON
     {"id": "r3", "premises": ["a3"], "conclusion": "a4", "type": "defeasible"}
   ]
 }
-Example 4 — AND Conjunction Group
-Text: The engine starts because the battery is charged and the ignition is on.
-Atoms: a1: battery_charged, a2: ignition_on, a3: engine_starts
+Example 6 — AND Conjunction Group
+Input Text: The engine starts because the battery is charged and the ignition is on.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "The battery is charged", "kb_type": "premise", "source_quote": "the battery is charged"},
+    {"id": "a2", "text": "The ignition is on", "kb_type": "premise", "source_quote": "the ignition is on"},
+    {"id": "a3", "text": "The engine starts", "kb_type": "premise", "source_quote": "The engine starts"}
+  ]
+}
 Output:
 
 JSON
@@ -169,9 +223,17 @@ JSON
     {"id": "r1", "premises": ["a1", "a2"], "conclusion": "a3", "type": "defeasible"}
   ]
 }
-Example 5 — Fallacy Preservation (Affirming the Consequent)
-Text: If the light is red, the engine is overheating. The engine is overheating, therefore the light is red.
-Atoms: a1: light_red, a2: engine_overheating
+Example 7 — Fallacy Preservation (Affirming the Consequent)
+Input Text: If the light is red, the engine is overheating. The engine is overheating, therefore the light is red.
+Input Atoms:
+
+JSON
+{
+  "atoms": [
+    {"id": "a1", "text": "The light is red", "kb_type": "premise", "source_quote": "the light is red"},
+    {"id": "a2", "text": "The engine is overheating", "kb_type": "premise", "source_quote": "the engine is overheating"}
+  ]
+}
 Output:
 
 JSON

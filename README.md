@@ -43,7 +43,7 @@ PNsAV folosește Python pentru extragerea structurilor argumentative și validar
 
 ### 1. Compilarea sursei
 
-Chiar dacă scripturile Python rulează fără compilare, doar prin interpretare, codul C++ trebuie compilat într-un modul pentru a fi utilizat in Python. Folosim un environment `cmake` pentru a converti codul în modul de tip `.pyd` importat direct în scriptul de intrare, scris în Python. Pentru rularea programului se recomandă folosirea variantei 3.13 a limbajului, deoarece API-ul OpenAI nu are încă suport pentru versiuni mai noi.
+Chiar dacă scripturile Python rulează fără compilare, doar prin interpretare, codul C++ trebuie compilat într-un modul pentru a fi utilizat in Python. Folosim un script de compilare custom și cross-platform pentru a converti codul în modul de tip `.pyd/.so` importat direct în scriptul de intrare, scris în Python. Pentru rularea programului se recomandă folosirea variantei 3.13 a limbajului, deoarece API-ul OpenAI nu are încă suport pentru versiuni mai noi. Requirements-urile includ Python <3.13 și un compilator de C++ (MSCV pentru Windows, iar g++ pentru Linux).
 ### 2. Executarea programului fără compilare
 
 Se execută cu Python 3.13 scriptul `src/interface/index.py` după instalarea Streamlit, streamlit-agraph. Modulul motorului se găsește în `src/core/engine`. 

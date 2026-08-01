@@ -67,7 +67,7 @@ Noi credem că AI-ul nu ar trebui să fie un fenomen înspăimântător, așa cu
 * La deployment, posibilitatea de a selecta propriul model lingvistic
 ### Deployment
 
-Momentan, PNsAV este în proces de deployment, aplicația urmând să fie publică și accesibilă oricui.
+PNsAV poate fi utilizat folosind o cheie OpenAI la adresa [PNsAV's website](pnsav-engine.streamlit.app).
 ## 📝 Cercetare
 
 Lucrarea ștințiifică aferentă se poate regăsi în `documentation/paper`.

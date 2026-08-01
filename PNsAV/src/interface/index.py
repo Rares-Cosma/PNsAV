@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 from streamlit_agraph import agraph, Node, Edge, Config
 from pathlib import Path
@@ -149,7 +151,17 @@ with col_stanga:
     user_text = st.text_area("Text Input", height=200, placeholder="Paste your text...", label_visibility="collapsed")
     #st.html(f"<div style='text-align:right; font-size:11px; color:#53647a; margin-top:-5px; margin-bottom:15px;'>{len(user_text)} / 10000</div>")
     
+    st.html("<div style='font-size:13px; font-weight:bold; color:#8b9eb7; margin-top:10px; margin-bottom:8px;'>OpenAI API Key:</div>")
+    openai_api_key = st.text_input(
+        "OpenAI API Key",
+        type="password",
+        placeholder="sk-...",
+        label_visibility="collapsed"
+    )
+
     if st.button("Analyze", type="primary", use_container_width=True):
+        if not openai_api_key.strip():
+            st.error("Please enter a valid OpenAI API key to proceed.")
         if uploaded_file is not None:
             st.session_state["analysed_text"] = uploaded_file.read().decode("utf-8")
         else:
@@ -161,12 +173,17 @@ with col_stanga:
         if st.session_state["analysed_text"]:
             with st.spinner("Running background script..."):
                 try:
+                    env = os.environ.copy()
+                    env["OPENAI_API_KEY"] = openai_api_key.strip()
+
                     process = subprocess.run(
                         [sys.executable, str(worker_path), st.session_state["analysed_text"]],
                         capture_output=True,
                         text=True,
-                        check=True
+                        check=True,
+                        env=env
                     )
+
                     extracted = process.stdout.strip()
                     st.session_state["show_config_dialog"] = True
                     st.session_state["atoms"] = ast.literal_eval(extracted.split("@")[0])["atoms"]
